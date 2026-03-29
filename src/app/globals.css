@@ -81,7 +81,8 @@
   }
 
   a:focus-visible {
-    @apply outline-none ring-2 ring-offset-2 ring-brand-500;
+    @apply outline-none ring-2 ring-offset-2;
+    ring-color: var(--brand);
   }
 
   button {
@@ -89,7 +90,8 @@
   }
 
   button:focus-visible {
-    @apply outline-none ring-2 ring-offset-2 ring-brand-500;
+    @apply outline-none ring-2 ring-offset-2;
+    ring-color: var(--brand);
   }
 
   /* Lists */
@@ -179,7 +181,11 @@
    * Button base styles
    */
   .btn-base {
-    @apply inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-500;
+    @apply inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+  }
+
+  .btn-base:focus-visible {
+    ring-color: var(--brand);
   }
 
   .btn-primary {
@@ -198,7 +204,11 @@
    * Input base styles
    */
   .input-base {
-    @apply w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500;
+    @apply w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:border-brand-500;
+  }
+
+  .input-base:focus {
+    ring-color: rgba(227, 90, 43, 0.2);
   }
 
   /**
