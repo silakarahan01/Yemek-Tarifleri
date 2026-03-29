@@ -9,6 +9,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { Providers } from '@/lib/providers'
 import { Header } from '@/components/organisms/Header/Header'
+import { Footer } from '@/components/organisms/Footer/Footer'
 import './globals.css'
 
 // MSW initialization (development'ta mock API çalışması için)
@@ -64,11 +65,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
 
-      <body className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+      <body className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white flex flex-col min-h-screen">
         {/* Client-side providers */}
         <Providers>
           <Header />
-          {children}
+          <main className="flex-1">
+            {children}
+          </main>
+          <Footer />
         </Providers>
       </body>
     </html>

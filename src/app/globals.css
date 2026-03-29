@@ -10,15 +10,43 @@
 @import "tailwindcss";
 
 /**
+ * CSS Custom Properties
+ */
+:root {
+  --brand: #e35a2b;
+  --brand-light: #f5bb9e;
+  --brand-dark: #d64a1f;
+  --cream-bg: #fafaf8;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+  }
+}
+
+/**
  * Base styles
  */
 @layer base {
   html {
     @apply scroll-smooth;
+    color-scheme: light dark;
   }
 
   body {
     @apply antialiased font-sans;
+    background-color: var(--cream-bg);
+    color: var(--text-primary);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body {
+      @apply bg-gray-900 text-gray-50;
+    }
   }
 
   /* Headings */
@@ -49,10 +77,19 @@
   /* Links */
   a {
     @apply transition-colors duration-200;
+    color: var(--brand);
   }
 
   a:focus-visible {
-    @apply outline-none ring-2 ring-offset-2 ring-blue-500;
+    @apply outline-none ring-2 ring-offset-2 ring-brand-500;
+  }
+
+  button {
+    @apply transition-all duration-200;
+  }
+
+  button:focus-visible {
+    @apply outline-none ring-2 ring-offset-2 ring-brand-500;
   }
 
   /* Lists */
@@ -130,6 +167,54 @@
   .flex-center {
     @apply flex items-center justify-center;
   }
+
+  /**
+   * Card - reusable card styles
+   */
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden;
+  }
+
+  /**
+   * Button base styles
+   */
+  .btn-base {
+    @apply inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-500;
+  }
+
+  .btn-primary {
+    @apply btn-base bg-brand-500 hover:bg-brand-600 text-white;
+  }
+
+  .btn-secondary {
+    @apply btn-base bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white;
+  }
+
+  .btn-outline {
+    @apply btn-base border-2 border-brand-500 text-brand-500 hover:bg-brand-50 dark:hover:bg-brand-500/10;
+  }
+
+  /**
+   * Input base styles
+   */
+  .input-base {
+    @apply w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500;
+  }
+
+  /**
+   * Badge base styles
+   */
+  .badge {
+    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap;
+  }
+
+  .badge-brand {
+    @apply badge bg-brand-100 dark:bg-brand-900/30 text-brand-800 dark:text-brand-200;
+  }
+
+  .badge-gray {
+    @apply badge bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200;
+  }
 }
 
 /**
@@ -158,7 +243,7 @@
   }
 
   /**
-   * Scrollbar styling (Webkit browsers)
+   * Scrollbar styling (Webkit browsers) - smooth orange scrollbar
    */
   .scrollbar-thin::-webkit-scrollbar {
     @apply w-2 h-2;
@@ -169,11 +254,12 @@
   }
 
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    @apply bg-gray-400 dark:bg-gray-600 rounded;
+    background-color: var(--brand);
+    @apply rounded opacity-70 hover:opacity-100 transition-opacity;
   }
 
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-500 dark:bg-gray-500;
+    background-color: var(--brand-dark);
   }
 
   /**
@@ -196,6 +282,37 @@
  * Animations
  */
 @layer components {
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   @keyframes shimmer {
     0% {
       background-position: -1000px 0;
@@ -203,6 +320,18 @@
     100% {
       background-position: 1000px 0;
     }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .animate-slideUp {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .animate-slideDown {
+    animation: slideDown 0.3s ease-out;
   }
 
   .animate-shimmer {

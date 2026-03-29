@@ -15,6 +15,7 @@
  */
 
 import React from 'react'
+import { cn } from '@/lib/utils'
 
 type Variant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger'
 type Size = 'sm' | 'md' | 'lg'
@@ -33,9 +34,9 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantClasses: Record<Variant, string> = {
-  primary: 'bg-blue-600 hover:bg-blue-700 text-white',
+  primary: 'bg-brand-500 hover:bg-brand-600 text-white',
   secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white',
-  outline: 'border-2 border-blue-600 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950',
+  outline: 'border-2 border-brand-500 text-brand-500 hover:bg-brand-50 dark:hover:bg-brand-500/10',
   ghost: 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-900 dark:text-white',
   danger: 'bg-red-600 hover:bg-red-700 text-white',
 }
@@ -71,16 +72,14 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={isDisabled}
         aria-busy={loading}
         aria-disabled={isDisabled}
-        className={`
-          inline-flex items-center justify-center
-          font-medium rounded-lg
-          transition-colors duration-200
-          focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-          disabled:opacity-60 disabled:cursor-not-allowed
-          ${variantClasses[variant]}
-          ${sizeClasses[size]}
-          ${className}
-        `}
+        className={cn(
+          'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200',
+          'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500',
+          'disabled:opacity-60 disabled:cursor-not-allowed',
+          variantClasses[variant],
+          sizeClasses[size],
+          className
+        )}
         {...props}
       >
         {loading ? (
