@@ -181,34 +181,105 @@
    * Button base styles
    */
   .btn-base {
-    @apply inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+    @apply inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200;
+    outline: none;
   }
 
   .btn-base:focus-visible {
-    ring-color: var(--brand);
+    outline: none;
+    ring: 2px var(--brand);
+    ring-offset: 2px;
   }
 
   .btn-primary {
-    @apply btn-base bg-brand-500 hover:bg-brand-600 text-white;
+    @apply inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 text-white;
+    background-color: var(--brand);
+    outline: none;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--brand-dark);
+  }
+
+  .btn-primary:focus-visible {
+    outline: none;
+    ring: 2px var(--brand);
+    ring-offset: 2px;
   }
 
   .btn-secondary {
-    @apply btn-base bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white;
+    @apply inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200;
+    background-color: #f3f4f6;
+    color: #111827;
+    outline: none;
+  }
+
+  .btn-secondary:hover {
+    background-color: #e5e7eb;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .btn-secondary {
+      background-color: #374151;
+      color: #f9fafb;
+    }
+
+    .btn-secondary:hover {
+      background-color: #4b5563;
+    }
+  }
+
+  .btn-secondary:focus-visible {
+    outline: none;
+    ring: 2px var(--brand);
+    ring-offset: 2px;
   }
 
   .btn-outline {
-    @apply btn-base border-2 border-brand-500 text-brand-500 hover:bg-brand-50 dark:hover:bg-brand-500/10;
+    @apply inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200;
+    border: 2px solid var(--brand);
+    color: var(--brand);
+    outline: none;
+  }
+
+  .btn-outline:hover {
+    background-color: rgba(227, 90, 43, 0.05);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .btn-outline:hover {
+      background-color: rgba(227, 90, 43, 0.1);
+    }
+  }
+
+  .btn-outline:focus-visible {
+    outline: none;
+    ring: 2px var(--brand);
+    ring-offset: 2px;
   }
 
   /**
    * Input base styles
    */
   .input-base {
-    @apply w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:border-brand-500;
+    @apply w-full px-4 py-2 border rounded-lg bg-white text-gray-900 placeholder-gray-500 transition-all duration-200;
+    border-color: #d1d5db;
+    outline: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .input-base {
+      background-color: #1f2937;
+      color: #f9fafb;
+      border-color: #4b5563;
+      placeholder-color: #9ca3af;
+    }
   }
 
   .input-base:focus {
-    ring-color: rgba(227, 90, 43, 0.2);
+    outline: none;
+    ring: 2px rgba(227, 90, 43, 0.2);
+    border-color: var(--brand);
   }
 
   /**
@@ -219,11 +290,29 @@
   }
 
   .badge-brand {
-    @apply badge bg-brand-100 dark:bg-brand-900/30 text-brand-800 dark:text-brand-200;
+    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap;
+    background-color: rgba(227, 90, 43, 0.1);
+    color: #92400e;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .badge-brand {
+      background-color: rgba(227, 90, 43, 0.2);
+      color: #fca5a5;
+    }
   }
 
   .badge-gray {
-    @apply badge bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200;
+    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap;
+    background-color: #f3f4f6;
+    color: #1f2937;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .badge-gray {
+      background-color: #1f2937;
+      color: #f3f4f6;
+    }
   }
 }
 
