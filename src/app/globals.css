@@ -1,0 +1,258 @@
+/**
+ * Global CSS styles
+ *
+ * Tailwind directives, custom utilities, global animations
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* Tailwind CSS v4 */
+@import "tailwindcss";
+
+/**
+ * Base styles
+ */
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply antialiased font-sans;
+  }
+
+  /* Headings */
+  h1 {
+    @apply text-5xl font-bold tracking-tighter;
+  }
+
+  h2 {
+    @apply text-4xl font-bold tracking-tight;
+  }
+
+  h3 {
+    @apply text-3xl font-bold;
+  }
+
+  h4 {
+    @apply text-2xl font-bold;
+  }
+
+  h5 {
+    @apply text-xl font-bold;
+  }
+
+  h6 {
+    @apply text-lg font-bold;
+  }
+
+  /* Links */
+  a {
+    @apply transition-colors duration-200;
+  }
+
+  a:focus-visible {
+    @apply outline-none ring-2 ring-offset-2 ring-blue-500;
+  }
+
+  /* Lists */
+  ul,
+  ol {
+    @apply list-inside;
+  }
+
+  /* Code blocks */
+  code {
+    @apply bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded font-mono text-sm;
+  }
+
+  pre {
+    @apply bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto;
+  }
+
+  /* Tables */
+  table {
+    @apply w-full border-collapse;
+  }
+
+  th {
+    @apply bg-gray-100 dark:bg-gray-800 px-4 py-2 text-left font-semibold;
+  }
+
+  td {
+    @apply px-4 py-2 border-b border-gray-200 dark:border-gray-700;
+  }
+}
+
+/**
+ * Component utilities
+ */
+@layer components {
+  /**
+   * Container - responsive max-width
+   */
+  .container {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /**
+   * Button reset - remove default button styles
+   */
+  .button-reset {
+    @apply bg-none border-none p-0 cursor-pointer;
+    font-family: inherit;
+  }
+
+  /**
+   * Visually hidden - a11y screen reader only text
+   */
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+  }
+
+  /**
+   * Smooth fade in
+   */
+  .fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  /**
+   * Blur overlay - modals, dropdowns için
+   */
+  .blur-overlay {
+    @apply fixed inset-0 bg-black/50 backdrop-blur-sm;
+  }
+
+  /**
+   * Flex center - flex + center align
+   */
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+}
+
+/**
+ * Utility classes
+ */
+@layer utilities {
+  /**
+   * Line clamp - text truncate
+   */
+  .line-clamp-1 {
+    @apply overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    @apply overflow-hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    @apply overflow-hidden;
+  }
+
+  /**
+   * Scrollbar styling (Webkit browsers)
+   */
+  .scrollbar-thin::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-gray-800;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 dark:bg-gray-600 rounded;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-500 dark:bg-gray-500;
+  }
+
+  /**
+   * Aspect ratio utilities
+   */
+  .aspect-square {
+    @apply aspect-[1];
+  }
+
+  .aspect-video {
+    @apply aspect-[16/9];
+  }
+
+  .aspect-thumbnail {
+    @apply aspect-[4/3];
+  }
+}
+
+/**
+ * Animations
+ */
+@layer components {
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s infinite;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.3) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 1000px 100%;
+  }
+}
+
+/**
+ * Dark mode color scheme preference
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+}
+
+/**
+ * Reduce motion preference
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/**
+ * Print styles
+ */
+@media print {
+  body {
+    @apply bg-white text-black;
+  }
+
+  a {
+    @apply underline;
+  }
+
+  img {
+    @apply max-w-full;
+  }
+}

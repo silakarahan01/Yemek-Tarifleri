@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(curl -s http://localhost:3005/login)",
+      "Bash(npm run:*)",
+      "Bash(netstat -ano)"
+    ]
+  }
+}
