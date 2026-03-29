@@ -25,6 +25,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { RecipeListItem, RecipeDifficulty } from '@/types/recipe.types'
 import { RecipeCardSkeleton } from './RecipeCardSkeleton'
+import { cn } from '@/lib/utils'
 
 interface RecipeCardProps {
   /** Recipe veri */
@@ -54,13 +55,13 @@ const getDifficultyColor = (difficulty: RecipeDifficulty): string => {
 }
 
 /**
- * Zorluk seviyesini label'a dönüştür
+ * Zorluk seviyesini label'a dönüştür (Türkçe)
  */
 const getDifficultyLabel = (difficulty: RecipeDifficulty): string => {
   const labels: Record<RecipeDifficulty, string> = {
-    [RecipeDifficulty.EASY]: 'Easy',
-    [RecipeDifficulty.MEDIUM]: 'Medium',
-    [RecipeDifficulty.HARD]: 'Hard',
+    [RecipeDifficulty.EASY]: 'Kolay',
+    [RecipeDifficulty.MEDIUM]: 'Orta',
+    [RecipeDifficulty.HARD]: 'Zor',
   }
   return labels[difficulty]
 }
@@ -103,52 +104,59 @@ export const RecipeCard = React.memo<RecipeCardProps>(
 
     return (
       <article
-        className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+        className={cn(
+          'card cursor-pointer animate-fadeIn',
+          'hover:shadow-lg'
+        )}
         onClick={handleCardClick}
         role="article"
         aria-label={`Recipe: ${recipe.title}`}
       >
         {/* Image Container */}
         <div className="relative h-48 bg-gray-200 dark:bg-gray-700 overflow-hidden group">
-          <Link href={`/recipes/${recipe.id}`}>
+          <Link href={`/recipes/${recipe.id}`} className="block w-full h-full">
             <Image
               src={recipe.imageUrl}
               alt={recipe.title}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-300"
-              // Lazy loading (viewport'a girince load et)
               loading="lazy"
-              // Responsive image sizes
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               onError={(e) => {
-                // Fallback: görselbüklenme başarısızsa
                 const img = e.target as HTMLImageElement
                 img.src = '/images/placeholder.jpg'
               }}
             />
           </Link>
 
-          {/* Difficulty Badge */}
+          {/* Difficulty Badge - Top Right */}
           <div className="absolute top-3 right-3">
             <span
-              className={`px-3 py-1 text-xs font-semibold rounded-full ${difficultyColor}`}
+              className={cn(
+                'px-3 py-1 text-xs font-semibold rounded-full',
+                difficultyColor
+              )}
               role="status"
             >
               {difficultyLabel}
             </span>
           </div>
 
-          {/* Favorite Button (top left) */}
+          {/* Favorite Button - Top Left */}
           <button
             onClick={handleFavoriteClick}
             disabled={!onFavoriteClick}
-            className={`absolute top-3 left-3 p-2 rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm
-              hover:bg-white dark:hover:bg-gray-900 transition-all duration-200
-              focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-              disabled:opacity-50 disabled:cursor-not-allowed`}
-            aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            className={cn(
+              'absolute top-3 left-3 p-2 rounded-full',
+              'bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm',
+              'hover:bg-white dark:hover:bg-gray-900',
+              'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500',
+              'disabled:opacity-50 disabled:cursor-not-allowed',
+              'transition-all duration-200'
+            )}
+            aria-label={isFavorite ? 'Favorilerden çıkar' : 'Favorilere ekle'}
             aria-pressed={isFavorite}
-            title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            title={isFavorite ? 'Favorilerden çıkar' : 'Favorilere ekle'}
           >
             <span className="text-xl" aria-hidden="true">
               {isFavorite ? '❤️' : '🤍'}
@@ -157,10 +165,13 @@ export const RecipeCard = React.memo<RecipeCardProps>(
         </div>
 
         {/* Content */}
-        <div className="p-4">
+        <div className="p-4 space-y-3">
           {/* Title */}
           <Link href={`/recipes/${recipe.id}`}>
-            <h3 className="font-bold text-lg text-gray-900 dark:text-white line-clamp-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <h3 className={cn(
+              'font-bold text-lg text-gray-900 dark:text-white line-clamp-2',
+              'hover:text-brand-600 dark:hover:text-brand-400 transition-colors'
+            )}>
               {recipe.title}
             </h3>
           </Link>

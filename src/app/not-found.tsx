@@ -1,29 +1,49 @@
 import Link from 'next/link'
+import { cn } from '@/lib/utils'
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
       <div className="text-center max-w-md">
-        <div className="text-7xl font-bold text-brand-500 mb-4">404</div>
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-          Sayfa Bulunamadı
+        <div className="text-9xl mb-6 animate-bounce">🍽️</div>
+        <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-3">
+          404
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 mb-8">
-          Aradığınız sayfa var olmayabilir veya silinmiş olabilir.
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          Tarif Bulunamadı
+        </h2>
+        <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
+          Aradığınız sayfa var olmayabilir veya silinmiş olabilir. Başka bir tarif bulmaya çalışın.
         </p>
 
         <div className="space-y-3">
           <Link
             href="/recipes"
-            className="block px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white font-medium rounded-lg transition-colors"
+            className={cn(
+              'block px-6 py-4 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-lg',
+              'transition-all duration-200 shadow-md hover:shadow-lg'
+            )}
           >
-            Tariflere Dön
+            Tüm Tarifləri Gör
           </Link>
           <Link
             href="/search"
-            className="block px-6 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            className={cn(
+              'block px-6 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white',
+              'border-2 border-gray-300 dark:border-gray-600 font-semibold rounded-lg',
+              'hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200'
+            )}
           >
-            Ara
+            Tarif Ara
+          </Link>
+          <Link
+            href="/"
+            className={cn(
+              'block px-6 py-4 text-gray-700 dark:text-gray-300 font-semibold rounded-lg',
+              'hover:text-brand-600 dark:hover:text-brand-400 transition-colors'
+            )}
+          >
+            Ana Sayfaya Dön
           </Link>
         </div>
       </div>

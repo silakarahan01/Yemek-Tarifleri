@@ -11,16 +11,36 @@ import { useRecipesQuery } from '@/services/query/recipe.queries'
 import { RecipeCard } from '@/components/molecules/RecipeCard/RecipeCard'
 import { RecipeCardSkeleton } from '@/components/molecules/RecipeCard/RecipeCardSkeleton'
 import { useFavorites } from '@/hooks/useFavorites'
+import { RecipeCategory } from '@/types/recipe.types'
+import { cn } from '@/lib/utils'
+
+const categoryLabels: Record<RecipeCategory, string> = {
+  breakfast: 'Kahvaltı',
+  lunch: 'Öğle Yemeği',
+  dinner: 'Akşam Yemeği',
+  dessert: 'Tatlı',
+  snack: 'Ara Sıcak',
+  beverage: 'İçecek',
+  vegetarian: 'Vejetaryen',
+  vegan: 'Vegan',
+  'gluten-free': 'Glutensiz',
+}
+
+const mainCategories: RecipeCategory[] = ['breakfast', 'lunch', 'dinner', 'dessert', 'snack']
 
 export default function RecipesPage() {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState<RecipeCategory | null>(null)
+  const [sortBy, setSortBy] = useState<'newest' | 'rating' | 'popular'>('newest')
 
   // TanStack Query ile tarifleri çek
   const { data, isLoading, error } = useRecipesQuery({
     page,
     pageSize: 20,
     search: search || undefined,
+    categories: selectedCategory ? [selectedCategory] : undefined,
+    sortBy,
   })
 
   // Favorites hook
@@ -46,7 +66,7 @@ export default function RecipesPage() {
           </p>
 
           {/* Search Bar */}
-          <form onSubmit={handleSearch} className="flex gap-3 max-w-md">
+          <form onSubmit={handleSearch} className="flex gap-3 mb-8">
             <input
               type="text"
               value={search}
@@ -61,6 +81,64 @@ export default function RecipesPage() {
               Ara
             </button>
           </form>
+
+          {/* Category Filter Chips */}
+          <div className="mb-8">
+            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Kategoriler</p>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => {
+                  setSelectedCategory(null)
+                  setPage(1)
+                }}
+                className={cn(
+                  'px-4 py-2 rounded-full font-medium transition-all duration-200 text-sm',
+                  selectedCategory === null
+                    ? 'bg-brand-500 text-white shadow-md'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                )}
+              >
+                Tüm Kategoriler
+              </button>
+              {mainCategories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => {
+                    setSelectedCategory(category)
+                    setPage(1)
+                  }}
+                  className={cn(
+                    'px-4 py-2 rounded-full font-medium transition-all duration-200 text-sm',
+                    selectedCategory === category
+                      ? 'bg-brand-500 text-white shadow-md'
+                      : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  )}
+                >
+                  {categoryLabels[category]}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Sort Dropdown */}
+          <div className="flex items-center gap-2">
+            <label htmlFor="sort" className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+              Sıralama:
+            </label>
+            <select
+              id="sort"
+              value={sortBy}
+              onChange={(e) => {
+                setSortBy(e.target.value as 'newest' | 'rating' | 'popular')
+                setPage(1)
+              }}
+              className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all"
+            >
+              <option value="newest">En Yeni</option>
+              <option value="rating">En Yüksek Rating</option>
+              <option value="popular">En Popüler</option>
+            </select>
+          </div>
         </div>
 
         {/* Error State */}

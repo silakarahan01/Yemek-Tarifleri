@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import Link from 'next/link'
+import { cn } from '@/lib/utils'
 
 interface ErrorProps {
   error: Error & { digest?: string }
@@ -14,33 +15,60 @@ export default function Error({ error, reset }: ErrorProps) {
   }, [error])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
       <div className="text-center max-w-md">
-        <div className="text-6xl mb-4">😕</div>
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+        <div className="text-9xl mb-6 animate-pulse">⚠️</div>
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">
           Hata Oluştu!
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 mb-2">
-          Üzgünüz, bir şeyler yanlış gitti.
+        <p className="text-lg text-gray-600 dark:text-gray-400 mb-4">
+          Üzgünüz, bir şeyler yanlış gitti. Lütfen tekrar deneyin.
         </p>
-        <p className="text-sm text-red-600 dark:text-red-400 mb-8 break-all">
-          {error.message}
-        </p>
+
+        {error.message && (
+          <div className="mb-8 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+            <p className="text-sm text-red-700 dark:text-red-300 break-all">
+              {error.message}
+            </p>
+          </div>
+        )}
 
         <div className="space-y-3">
           <button
             onClick={reset}
-            className="w-full px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white font-medium rounded-lg transition-colors"
+            className={cn(
+              'w-full px-6 py-4 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-lg',
+              'transition-all duration-200 shadow-md hover:shadow-lg'
+            )}
           >
-            Tekrar Dene
+            🔄 Tekrar Dene
           </button>
           <Link
             href="/recipes"
-            className="block px-6 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            className={cn(
+              'block px-6 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white',
+              'border-2 border-gray-300 dark:border-gray-600 font-semibold rounded-lg',
+              'hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200'
+            )}
+          >
+            Tarifləre Dön
+          </Link>
+          <Link
+            href="/"
+            className={cn(
+              'block px-6 py-4 text-gray-700 dark:text-gray-300 font-semibold rounded-lg',
+              'hover:text-brand-600 dark:hover:text-brand-400 transition-colors'
+            )}
           >
             Ana Sayfaya Dön
           </Link>
         </div>
+
+        {error.digest && (
+          <p className="mt-8 text-xs text-gray-500 dark:text-gray-500">
+            Error ID: {error.digest}
+          </p>
+        )}
       </div>
     </div>
   )
