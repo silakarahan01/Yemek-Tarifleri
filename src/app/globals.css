@@ -11,12 +11,15 @@
 
 /**
  * CSS Custom Properties
+ * Orange, Yellow, Red, White color scheme
  */
 :root {
-  --brand: #e35a2b;
-  --brand-light: #f5bb9e;
-  --brand-dark: #d64a1f;
-  --cream-bg: #fafaf8;
+  --brand: #f97316;
+  --brand-light: #fdba74;
+  --brand-dark: #ea580c;
+  --accent-red: #ef4444;
+  --accent-yellow: #f59e0b;
+  --cream-bg: #fffbf0;
   --text-primary: #111827;
   --text-secondary: #6b7280;
 }
@@ -291,14 +294,14 @@
 
   .badge-brand {
     @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap;
-    background-color: rgba(227, 90, 43, 0.1);
-    color: #92400e;
+    background-color: rgba(249, 115, 22, 0.1);
+    color: #b45309;
   }
 
   @media (prefers-color-scheme: dark) {
     .badge-brand {
-      background-color: rgba(227, 90, 43, 0.2);
-      color: #fca5a5;
+      background-color: rgba(249, 115, 22, 0.2);
+      color: #fdba74;
     }
   }
 

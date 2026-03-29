@@ -24,18 +24,46 @@ const config: Config = {
        * Color Palette - Recipe platformu için
        */
       colors: {
-        // Brand colors
+        // Brand colors - Orange (Primary)
         brand: {
-          50: '#fef7f0',
-          100: '#fdeee0',
-          200: '#fadac2',
-          300: '#f5bb9e',
-          400: '#ed8d5f', // Primary orange
-          500: '#e35a2b',
-          600: '#d64a1f',
-          700: '#b63a1a',
-          800: '#8e2f15',
-          900: '#6b2312',
+          50: '#fff7ed',
+          100: '#ffedd5',
+          200: '#fed7aa',
+          300: '#fdba74',
+          400: '#fb923c', // Secondary orange
+          500: '#f97316', // Primary orange
+          600: '#ea580c',
+          700: '#c2410c',
+          800: '#9a3412',
+          900: '#7c2d12',
+        },
+
+        // Yellow colors (Secondary)
+        yellow: {
+          50: '#fefce8',
+          100: '#fef3c7',
+          200: '#fde68a',
+          300: '#fcd34d',
+          400: '#fbbf24',
+          500: '#f59e0b',
+          600: '#d97706',
+          700: '#b45309',
+          800: '#92400e',
+          900: '#78350f',
+        },
+
+        // Red colors (Accent)
+        red: {
+          50: '#fef2f2',
+          100: '#fee2e2',
+          200: '#fecaca',
+          300: '#fca5a5',
+          400: '#f87171',
+          500: '#ef4444',
+          600: '#dc2626',
+          700: '#b91c1c',
+          800: '#991b1b',
+          900: '#7f1d1d',
         },
 
         // Semantic colors

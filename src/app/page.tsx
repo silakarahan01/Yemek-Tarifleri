@@ -37,7 +37,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-white dark:bg-gray-900">
       {/* Hero Section */}
-      <section style={{ backgroundColor: '#e35a2b' }} className="relative overflow-hidden text-white py-20 md:py-32">
+      <section style={{ backgroundColor: '#f97316' }} className="relative overflow-hidden text-white py-20 md:py-32">
         {/* Content */}
         <div className="container relative z-10">
           <div className="max-w-3xl mx-auto text-center space-y-8">
@@ -122,10 +122,10 @@ export default function HomePage() {
           {/* Quick Recipe Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { name: 'Menemen', emoji: '🍳', color: 'from-orange-200 to-orange-100' },
-              { name: 'Çoban Salatası', emoji: '🥗', color: 'from-green-200 to-green-100' },
-              { name: 'Mercimek Çorbası', emoji: '🍲', color: 'from-red-200 to-orange-100' },
-              { name: 'Baklava', emoji: '🍯', color: 'from-yellow-200 to-orange-100' },
+              { name: 'Menemen', emoji: '🍳', color: 'from-orange-300 to-orange-100' },
+              { name: 'Çoban Salatası', emoji: '🥗', color: 'from-yellow-300 to-yellow-100' },
+              { name: 'Mercimek Çorbası', emoji: '🍲', color: 'from-red-300 to-red-100' },
+              { name: 'Baklava', emoji: '🍯', color: 'from-orange-200 to-yellow-100' },
             ].map((recipe, index) => (
               <Link
                 key={index}
@@ -142,7 +142,7 @@ export default function HomePage() {
           <div className="text-center pt-8">
             <Link
               href="/recipes"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-semibold"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-red-500 hover:bg-red-600 text-white font-semibold"
             >
               Hemen Keşfet Başla
             </Link>
