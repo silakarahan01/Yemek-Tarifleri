@@ -124,7 +124,7 @@ export default function RegisterPage() {
       </div>
 
       {/* Right Panel - Form */}
-      <div className="flex-1 flex items-center justify-center bg-white dark:bg-gray-900 p-4 md:p-12 overflow-y-auto">
+      <div className="flex-1 flex items-center justify-center dark:bg-gray-900 p-4 md:p-12 overflow-y-auto" style={{ backgroundColor: '#f9f7f4' }}>
         <div className="w-full max-w-md space-y-8 py-8">
           {/* Mobile Logo */}
           <div className="lg:hidden text-center mb-8">
@@ -311,7 +311,7 @@ export default function RegisterPage() {
               <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white dark:bg-gray-900 text-gray-500">Zaten hesabınız var mı?</span>
+              <span className="px-2 dark:bg-gray-900 text-gray-500" style={{ backgroundColor: '#f9f7f4' }}>Zaten hesabınız var mı?</span>
             </div>
           </div>
 

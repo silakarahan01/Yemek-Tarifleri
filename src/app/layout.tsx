@@ -65,7 +65,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
 
-      <body className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white flex flex-col min-h-screen">
+      <body className="dark:bg-gray-900 text-gray-900 dark:text-white flex flex-col min-h-screen" style={{ backgroundColor: '#f9f7f4' }}>
         {/* Client-side providers */}
         <Providers>
           <Header />

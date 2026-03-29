@@ -3,7 +3,6 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { cn } from '@/lib/utils'
 
 export default function HomePage() {
   const router = useRouter()
@@ -35,7 +34,7 @@ export default function HomePage() {
   ]
 
   return (
-    <main className="min-h-screen bg-white dark:bg-gray-900">
+    <main className="min-h-screen dark:bg-gray-900" style={{ backgroundColor: '#f9f7f4' }}>
       {/* Hero Section */}
       <section style={{ backgroundColor: '#f97316' }} className="relative overflow-hidden text-white py-20 md:py-32">
         {/* Content */}

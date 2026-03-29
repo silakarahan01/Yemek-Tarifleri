@@ -25,7 +25,7 @@ function RecipeDetailContent({ id }: { id: string }) {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
+    <div className="min-h-screen dark:bg-gray-900" style={{ backgroundColor: '#f9f7f4' }}>
       {/* Breadcrumb */}
       <nav className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-6xl mx-auto px-4 py-3">

@@ -9,7 +9,7 @@ interface ErrorProps {
 
 export default function RecipesError({ reset }: ErrorProps) {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen dark:bg-gray-900" style={{ backgroundColor: '#f9f7f4' }}>
       <div className="container py-12">
         <div className="text-center max-w-md mx-auto">
           <div className="text-5xl mb-4">😕</div>

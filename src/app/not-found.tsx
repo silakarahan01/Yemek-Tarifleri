@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
+    <div className="min-h-screen dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4" style={{ backgroundColor: '#f9f7f4' }}>
       <div className="text-center max-w-md">
         <div className="text-9xl mb-6 animate-bounce">🍽️</div>
         <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-3">

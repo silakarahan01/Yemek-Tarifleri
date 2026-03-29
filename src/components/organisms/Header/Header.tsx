@@ -5,14 +5,12 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/store/auth.store'
 import { useLogoutMutation } from '@/services/query/auth.queries'
-import { cn } from '@/lib/utils'
 
 export function Header() {
   const router = useRouter()
   const { isAuthenticated, user } = useAuthStore()
   const { mutate: logout } = useLogoutMutation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [isDark, setIsDark] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
 
   // Initialize dark mode from localStorage and system preference
@@ -20,22 +18,10 @@ export function Header() {
     const isDarkMode =
       localStorage.getItem('theme') === 'dark' ||
       (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    setIsDark(isDarkMode)
     if (isDarkMode) {
       document.documentElement.classList.add('dark')
     }
   }, [])
-
-  const toggleDarkMode = () => {
-    const newDarkMode = !isDark
-    setIsDark(newDarkMode)
-    localStorage.setItem('theme', newDarkMode ? 'dark' : 'light')
-    if (newDarkMode) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-  }
 
   const handleLogout = () => {
     logout()

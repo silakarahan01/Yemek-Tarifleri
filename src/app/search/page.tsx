@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchRecipesQuery } from '@/services/query/recipe.queries'
 import { RecipeCard } from '@/components/molecules/RecipeCard/RecipeCard'
@@ -9,7 +9,7 @@ import { RecipeCardSkeleton } from '@/components/molecules/RecipeCard/RecipeCard
 import { useFavorites } from '@/hooks/useFavorites'
 import { cn } from '@/lib/utils'
 
-export default function SearchPage() {
+function SearchContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const query = searchParams.get('q') || ''
@@ -28,7 +28,7 @@ export default function SearchPage() {
   const popularSearches = ['Menemen', 'Çorba', 'Tatlı', 'Salata', 'Çay Saati Tarifleri']
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
+    <div className="min-h-screen dark:bg-gray-900" style={{ backgroundColor: '#f9f7f4' }}>
       {/* Hero Search Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-brand-500 via-brand-600 to-brand-700 text-white py-16 md:py-24">
         {/* Background decoration */}
@@ -42,7 +42,7 @@ export default function SearchPage() {
           <div className="max-w-3xl mx-auto text-center space-y-8">
             <div className="space-y-4">
               <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-                {query ? `"${query}" için sonuçlar` : 'Tarif Ara'}
+                {query ? `„${query}" için sonuçlar` : 'Tarif Ara'}
               </h1>
               <p className="text-lg md:text-xl text-brand-100 font-light">
                 {query
@@ -105,7 +105,7 @@ export default function SearchPage() {
       </section>
 
       {/* Results Section */}
-      <div className="bg-gray-50 dark:bg-gray-900 min-h-screen py-16">
+      <div className="dark:bg-gray-900 min-h-screen py-16" style={{ backgroundColor: '#f9f7f4' }}>
         <div className="container">
           {query ? (
             <>
@@ -140,7 +140,7 @@ export default function SearchPage() {
                     Tarif bulunamadı
                   </p>
                   <p className="text-gray-600 dark:text-gray-400 mb-8">
-                    "{query}" ile ilgili bir tarif yok. Farklı anahtar kelimelerle aramayı deneyin.
+                    „{query}" ile ilgili bir tarif yok. Farklı anahtar kelimelerle aramayı deneyin.
                   </p>
                   <div className="flex justify-center gap-4">
                     <Link
@@ -189,5 +189,13 @@ export default function SearchPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen dark:bg-gray-900" style={{ backgroundColor: '#f9f7f4' }} />}>
+      <SearchContent />
+    </Suspense>
   )
 }
