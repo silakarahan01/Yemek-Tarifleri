@@ -107,6 +107,14 @@ export const useFavoritesStore = create<FavoritesStore>()(
         favoriteIds: Array.from(state.favoriteIds),
         count: state.count,
       }),
+      merge: (persisted, current) => {
+        const p = persisted as { favoriteIds?: string[]; count?: number }
+        return {
+          ...current,
+          favoriteIds: new Set<string>(p.favoriteIds ?? []),
+          count: p.count ?? 0,
+        }
+      },
     }
   )
 )

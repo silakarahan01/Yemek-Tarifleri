@@ -8,7 +8,6 @@ import { useLogoutMutation } from '@/services/query/auth.queries'
 
 const NAV_LINKS = [
   { href: '/recipes', label: 'Tarifler' },
-  { href: '/search',  label: 'Keşfet' },
 ]
 
 export function Header() {

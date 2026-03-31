@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { btnClass } from '@/components/atoms/Button'
 
 interface ErrorProps {
   error: Error & { digest?: string }
@@ -23,7 +24,7 @@ export default function RecipesError({ reset }: ErrorProps) {
           <div className="space-y-3">
             <button
               onClick={reset}
-              className="w-full px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white font-medium rounded-lg transition-colors"
+              className={btnClass + ' w-full'}
             >
               Tekrar Dene
             </button>

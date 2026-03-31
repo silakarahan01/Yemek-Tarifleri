@@ -98,14 +98,7 @@ export const Providers: React.FC<ProvidersProps> = ({ children }) => {
   // Client'de: memoize QueryClient
   const queryClient = React.useMemo(() => getQueryClient(), [])
 
-  // MSW initialize et (development'ta)
-  React.useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      import('@/lib/msw-init').then(({ initializeMSW }) => {
-        initializeMSW()
-      })
-    }
-  }, [])
+  // MSW disabled — real Django backend in use
 
   return (
     <QueryClientProvider client={queryClient}>

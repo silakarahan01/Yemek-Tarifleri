@@ -13,6 +13,7 @@ import { RecipeCardSkeleton } from '@/components/molecules/RecipeCard/RecipeCard
 import { useFavorites } from '@/hooks/useFavorites'
 import { RecipeCategory } from '@/types/recipe.types'
 import { cn } from '@/lib/utils'
+import { Button, btnClass } from '@/components/atoms/Button'
 
 const categoryLabels: Record<RecipeCategory, string> = {
   breakfast: 'Kahvaltı',
@@ -74,12 +75,7 @@ export default function RecipesPage() {
               placeholder="Tarif ara..."
               className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
-            <button
-              type="submit"
-              className="px-6 py-2 bg-brand-500 hover:bg-brand-600 text-white font-medium rounded-lg transition-colors"
-            >
-              Ara
-            </button>
+            <Button type="submit">Ara</Button>
           </form>
 
           {/* Category Filter Chips */}
@@ -87,32 +83,16 @@ export default function RecipesPage() {
             <p className="text-sm font-semibold text-gray-700 mb-3">Kategoriler</p>
             <div className="flex flex-wrap gap-2">
               <button
-                onClick={() => {
-                  setSelectedCategory(null)
-                  setPage(1)
-                }}
-                className={cn(
-                  'px-4 py-2 rounded-full font-medium transition-all duration-200 text-sm',
-                  selectedCategory === null
-                    ? 'bg-brand-500 text-white shadow-md'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                )}
+                onClick={() => { setSelectedCategory(null); setPage(1) }}
+                className={cn(btnClass, 'rounded-full px-4 py-2 text-sm', selectedCategory !== null && 'bg-gray-100 hover:bg-gray-200 text-gray-700 shadow-none')}
               >
                 Tüm Kategoriler
               </button>
               {mainCategories.map((category) => (
                 <button
                   key={category}
-                  onClick={() => {
-                    setSelectedCategory(category)
-                    setPage(1)
-                  }}
-                  className={cn(
-                    'px-4 py-2 rounded-full font-medium transition-all duration-200 text-sm',
-                    selectedCategory === category
-                      ? 'bg-brand-500 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  )}
+                  onClick={() => { setSelectedCategory(category); setPage(1) }}
+                  className={cn(btnClass, 'rounded-full px-4 py-2 text-sm', selectedCategory !== category && 'bg-gray-100 hover:bg-gray-200 text-gray-700 shadow-none')}
                 >
                   {categoryLabels[category]}
                 </button>
@@ -185,13 +165,9 @@ export default function RecipesPage() {
         {/* Pagination */}
         {!isLoading && recipes.length > 0 && (
           <div className="flex items-center justify-between pt-8 border-t border-gray-200">
-            <button
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
-              disabled={page === 1}
-              className="px-4 py-2 bg-white text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
+            <Button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>
               ← Önceki
-            </button>
+            </Button>
 
             <div className="flex items-center space-x-2">
               <span className="text-gray-600">Sayfa</span>
@@ -202,13 +178,9 @@ export default function RecipesPage() {
               </span>
             </div>
 
-            <button
-              onClick={() => setPage((p) => p + 1)}
-              disabled={!hasMore}
-              className="px-4 py-2 bg-white text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
+            <Button onClick={() => setPage((p) => p + 1)} disabled={!hasMore}>
               Sonraki →
-            </button>
+            </Button>
           </div>
         )}
       </div>

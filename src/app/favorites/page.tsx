@@ -6,6 +6,7 @@ import { RecipeCardSkeleton } from '@/components/molecules/RecipeCard/RecipeCard
 import { useFavorites } from '@/hooks/useFavorites'
 import { useAuthStore } from '@/store/auth.store'
 import Link from 'next/link'
+import { btnClass } from '@/components/atoms/Button'
 
 export default function FavoritesPage() {
   const { isAuthenticated } = useAuthStore()
@@ -24,7 +25,7 @@ export default function FavoritesPage() {
           </p>
           <Link
             href="/login"
-            className="inline-block px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white font-medium rounded-lg transition-colors"
+            className={btnClass}
           >
             Giriş Yap
           </Link>
@@ -72,7 +73,7 @@ export default function FavoritesPage() {
             </p>
             <Link
               href="/recipes"
-              className="inline-block px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white font-medium rounded-lg transition-colors"
+              className={btnClass}
             >
               Tarifleri Gözat
             </Link>

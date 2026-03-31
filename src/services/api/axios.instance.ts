@@ -14,8 +14,7 @@ import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'ax
 import { ApiError, ApiErrorResponse } from '@/types/api.types'
 import { RefreshTokenResponse } from '@/types/auth.types'
 
-// TODO: .env dosyasından okumak
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.example.com'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
 
 /**
  * Development'ta MSW server'ı başlat
@@ -46,10 +45,12 @@ apiClient.interceptors.request.use(
     // Zustand store'dan token al
     // Store'u import etmek circular dependency'e neden olabilir,
     // bu yüzden localStorage'dan doğrudan oku (production'da secure cookie tercih edilir)
-    const tokens = localStorage.getItem('auth-tokens')
-    if (tokens) {
-      const { accessToken } = JSON.parse(tokens)
-      config.headers.Authorization = `Bearer ${accessToken}`
+    if (typeof window !== 'undefined') {
+      const tokens = localStorage.getItem('auth-tokens')
+      if (tokens) {
+        const { accessToken } = JSON.parse(tokens)
+        config.headers.Authorization = `Bearer ${accessToken}`
+      }
     }
 
     return config

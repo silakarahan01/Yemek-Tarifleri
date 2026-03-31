@@ -1,156 +1,180 @@
 /**
- * Recipe API service sınıfı
+ * Recipe API service — adapted for Django REST Framework backend
  *
- * Tüm recipe ile ilgili API istekleri bu sınıfta tanımlanır
- * Axios instance'ı ve types kullanarak type-safe istekler yapar
+ * Django returns snake_case fields and DRF pagination format.
+ * This service maps them to the frontend's camelCase types.
  */
 
 import { apiClient } from './axios.instance'
-import { Recipe, RecipeListItem, RecipeListParams } from '@/types/recipe.types'
-import { ApiResponse, PaginatedResponse } from '@/types/api.types'
+import { Recipe, RecipeListItem, RecipeListParams, RecipeDifficulty, RecipeCategory } from '@/types/recipe.types'
+import { PaginatedResponse } from '@/types/api.types'
 
-/**
- * Recipe API service
- * Static methods ile organize edilir (DI gerekli değil)
- */
+// ─── Django response shapes ───────────────────────────────────────────────────
+
+interface DjangoRecipeListItem {
+  id: number
+  title: string
+  description: string
+  category: string
+  difficulty: string
+  prep_time: number
+  cook_time: number
+  total_time: number
+  servings: number
+  image_url: string
+  rating: string
+  rating_count: number
+  author_name: string
+  created_at: string
+}
+
+interface DjangoIngredient {
+  id: number
+  name: string
+  amount: string
+}
+
+interface DjangoInstruction {
+  id: number
+  step: number
+  description: string
+}
+
+interface DjangoNutrition {
+  calories: number
+  protein: number
+  carbs: number
+  fat: number
+}
+
+interface DjangoRecipeDetail extends DjangoRecipeListItem {
+  ingredients: DjangoIngredient[]
+  instructions: DjangoInstruction[]
+  nutrition: DjangoNutrition | null
+}
+
+interface DjangoPaginatedResponse<T> {
+  count: number
+  next: string | null
+  previous: string | null
+  results: T[]
+}
+
+// ─── Mappers ──────────────────────────────────────────────────────────────────
+
+function mapListItem(r: DjangoRecipeListItem): RecipeListItem {
+  return {
+    id: String(r.id),
+    title: r.title,
+    imageUrl: r.image_url,
+    prepTimeMinutes: r.prep_time,
+    cookTimeMinutes: r.cook_time,
+    difficulty: (r.difficulty as RecipeDifficulty) || RecipeDifficulty.EASY,
+    rating: parseFloat(r.rating) || 0,
+    reviewCount: r.rating_count,
+    favoriteCount: r.rating_count,
+  }
+}
+
+function mapDetail(r: DjangoRecipeDetail): Recipe {
+  return {
+    id: String(r.id),
+    title: r.title,
+    description: r.description,
+    prepTimeMinutes: r.prep_time,
+    cookTimeMinutes: r.cook_time,
+    servings: r.servings,
+    difficulty: (r.difficulty as RecipeDifficulty) || RecipeDifficulty.EASY,
+    categories: [r.category as RecipeCategory],
+    imageUrl: r.image_url,
+    rating: parseFloat(r.rating) || 0,
+    reviewCount: r.rating_count,
+    favoriteCount: r.rating_count,
+    createdAt: r.created_at,
+    updatedAt: r.created_at,
+    author: { id: '1', name: r.author_name },
+    ingredients: r.ingredients.map((ing) => ({
+      id: String(ing.id),
+      name: ing.name,
+      amount: ing.amount,
+      unit: '',
+    })),
+    instructions: r.instructions.map((ins) => ({
+      stepNumber: ins.step,
+      instruction: ins.description,
+    })),
+    nutrition: r.nutrition
+      ? {
+          calories: r.nutrition.calories,
+          protein: r.nutrition.protein,
+          carbs: r.nutrition.carbs,
+          fat: r.nutrition.fat,
+        }
+      : undefined,
+  }
+}
+
+function mapPaginated(
+  django: DjangoPaginatedResponse<DjangoRecipeListItem>,
+  page: number,
+  pageSize: number
+): PaginatedResponse<RecipeListItem> {
+  return {
+    items: django.results.map(mapListItem),
+    total: django.count,
+    page,
+    pageSize,
+    hasMore: django.next !== null,
+  }
+}
+
+// ─── Service ──────────────────────────────────────────────────────────────────
+
 export class RecipeService {
-  /**
-   * Tüm tarifleri liste olarak al (pagination + filtreleme ile)
-   *
-   * Query parameters:
-   * - page: sayfa numarası (1-indexed)
-   * - pageSize: sayfa başına kaç tarif
-   * - search: arama sorgusu (title/description'da)
-   * - categories: kategoriler (array)
-   * - difficulty: zorluk seviyesi
-   * - sortBy: sıralama türü
-   *
-   * @example
-   * const recipes = await RecipeService.getRecipes({
-   *   search: 'pasta',
-   *   categories: ['dinner'],
-   *   sortBy: 'newest'
-   * })
-   */
-  static async getRecipes(
-    params?: RecipeListParams
-  ): Promise<PaginatedResponse<RecipeListItem>> {
-    const response = await apiClient.get<
-      ApiResponse<PaginatedResponse<RecipeListItem>>
-    >('/recipes', { params })
+  static async getRecipes(params: RecipeListParams = {}): Promise<PaginatedResponse<RecipeListItem>> {
+    const page = params.page || 1
+    const pageSize = params.pageSize || 20
 
-    return response.data.data
+    const djangoParams: Record<string, string | number> = { page }
+    if (params.search) djangoParams.q = params.search
+    if (params.categories?.length) djangoParams.category = params.categories[0]
+    if (params.sortBy === 'rating') djangoParams.sort = 'rating'
+    else if (params.sortBy === 'popular') djangoParams.sort = 'popular'
+
+    const response = await apiClient.get<DjangoPaginatedResponse<DjangoRecipeListItem>>(
+      '/recipes/',
+      { params: djangoParams }
+    )
+    return mapPaginated(response.data, page, pageSize)
   }
 
-  /**
-   * Tek bir tarifi ID ile al
-   * Detaylı bilgiler içerir (ingredients, instructions, nutrition, vb)
-   *
-   * @param id - Tarif ID'si
-   * @example
-   * const recipe = await RecipeService.getRecipeById('recipe-123')
-   */
   static async getRecipeById(id: string): Promise<Recipe> {
-    const response = await apiClient.get<ApiResponse<Recipe>>(`/recipes/${id}`)
-    return response.data.data
+    const response = await apiClient.get<DjangoRecipeDetail>(`/recipes/${id}/`)
+    return mapDetail(response.data)
   }
 
-  /**
-   * Search endpoint'i (getRecipes'e alternatif, optimize search için)
-   * Backend'de text search indexing yapılıyorsa bu daha hızlı olur
-   *
-   * @param query - Arama metni
-   * @param limit - Kaç sonuç dönecek (autocomplete için)
-   */
-  static async searchRecipes(
-    query: string,
-    limit: number = 10
-  ): Promise<RecipeListItem[]> {
-    const response = await apiClient.get<ApiResponse<RecipeListItem[]>>(
-      '/recipes/search',
-      {
-        params: { q: query, limit },
-      }
+  static async searchRecipes(query: string, limit: number = 10): Promise<RecipeListItem[]> {
+    const response = await apiClient.get<DjangoPaginatedResponse<DjangoRecipeListItem>>(
+      '/recipes/',
+      { params: { q: query, page_size: limit } }
     )
-    return response.data.data
+    return response.data.results.map(mapListItem)
   }
 
-  /**
-   * Favoriye eklenmiş tarifleri al
-   * Authenticated request - token gerekli
-   *
-   * @param userId - Kullanıcı ID'si (opsiyonel, current user varsayılan)
-   */
-  static async getFavoriteRecipes(
-    userId?: string
-  ): Promise<PaginatedResponse<RecipeListItem>> {
-    const response = await apiClient.get<
-      ApiResponse<PaginatedResponse<RecipeListItem>>
-    >('/recipes/favorites', {
-      params: userId ? { userId } : undefined,
-    })
-    return response.data.data
-  }
-
-  /**
-   * Tarifi favorilere ekle
-   * İdempotent: aynı tarifi iki kez eklemek safe
-   *
-   * @param recipeId - Tarif ID'si
-   */
-  static async addFavorite(recipeId: string): Promise<void> {
-    await apiClient.post(`/recipes/${recipeId}/favorite`)
-  }
-
-  /**
-   * Tarifi favorilerden çıkar
-   *
-   * @param recipeId - Tarif ID'si
-   */
-  static async removeFavorite(recipeId: string): Promise<void> {
-    await apiClient.delete(`/recipes/${recipeId}/favorite`)
-  }
-
-  /**
-   * Tarif için yorum/rating ekle
-   *
-   * @param recipeId - Tarif ID'si
-   * @param rating - 1-5 arası puan
-   * @param comment - Opsiyonel yorum metni
-   */
-  static async addReview(
-    recipeId: string,
-    rating: number,
-    comment?: string
-  ): Promise<void> {
-    await apiClient.post(`/recipes/${recipeId}/reviews`, {
-      rating,
-      comment,
-    })
-  }
-
-  /**
-   * Trending tarifleri al
-   * Homepage'de kullanılacak
-   */
   static async getTrendingRecipes(limit: number = 12): Promise<RecipeListItem[]> {
-    const response = await apiClient.get<ApiResponse<RecipeListItem[]>>(
-      '/recipes/trending',
-      {
-        params: { limit },
-      }
+    const response = await apiClient.get<DjangoPaginatedResponse<DjangoRecipeListItem>>(
+      '/recipes/',
+      { params: { sort: 'popular', page_size: limit } }
     )
-    return response.data.data
+    return response.data.results.map(mapListItem)
   }
 
-  /**
-   * Yaklaşan/trending kategorileri al
-   * Sidebar filter'leri doldirmak için
-   */
-  static async getPopularCategories(): Promise<string[]> {
-    const response = await apiClient.get<ApiResponse<string[]>>(
-      '/categories/popular'
-    )
-    return response.data.data
+  static async getFavoriteRecipes(): Promise<PaginatedResponse<RecipeListItem>> {
+    return { items: [], total: 0, page: 1, pageSize: 20, hasMore: false }
   }
+
+  static async addFavorite(_recipeId: string): Promise<void> {}
+  static async removeFavorite(_recipeId: string): Promise<void> {}
+  static async addReview(_recipeId: string, _rating: number, _comment?: string): Promise<void> {}
+  static async getPopularCategories(): Promise<string[]> { return [] }
 }

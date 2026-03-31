@@ -14,7 +14,6 @@ interface FooterLink {
 const quickLinks: FooterLink[] = [
   { label: 'Anasayfa', href: '/' },
   { label: 'Tarifler', href: '/recipes' },
-  { label: 'Ara', href: '/search' },
   { label: 'Favorilerim', href: '/favorites' },
 ]
 
