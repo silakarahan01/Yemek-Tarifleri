@@ -10,7 +10,7 @@ import { Skeleton } from '@/components/atoms/Skeleton'
 
 export const RecipeCardSkeleton = React.memo(() => {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md">
+    <div className="bg-white rounded-lg overflow-hidden shadow-md">
       {/* Image skeleton */}
       <Skeleton className="h-48 w-full" />
 

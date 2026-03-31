@@ -25,9 +25,9 @@ function RecipeDetailContent({ id }: { id: string }) {
   }
 
   return (
-    <div className="min-h-screen dark:bg-gray-900" style={{ backgroundColor: '#f9f7f4' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#FFFFFF' }}>
       {/* Breadcrumb */}
-      <nav className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+      <nav className="bg-gray-50 border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-4 py-3">
           <ol className="flex items-center space-x-2 text-sm">
             <li>
@@ -35,14 +35,14 @@ function RecipeDetailContent({ id }: { id: string }) {
                 Ana Sayfa
               </Link>
             </li>
-            <li className="text-gray-600 dark:text-gray-400">/</li>
+            <li className="text-gray-600">/</li>
             <li>
               <Link href="/recipes" className="text-brand-500 hover:text-brand-600">
                 Tarifler
               </Link>
             </li>
-            <li className="text-gray-600 dark:text-gray-400">/</li>
-            <li className="text-gray-900 dark:text-white font-medium truncate">{recipe.title}</li>
+            <li className="text-gray-600">/</li>
+            <li className="text-gray-900 font-medium truncate">{recipe.title}</li>
           </ol>
         </div>
       </nav>
@@ -82,40 +82,40 @@ function RecipeDetailContent({ id }: { id: string }) {
         {/* Quick Info Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
           <div className="card p-6">
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">⏱️ Hazırlık Süresi</p>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">
+            <p className="text-sm text-gray-600 mb-2">⏱️ Hazırlık Süresi</p>
+            <p className="text-2xl font-bold text-gray-900">
               {formatTime(recipe.prepTimeMinutes)}
             </p>
           </div>
           <div className="card p-6">
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">🔥 Pişirme Süresi</p>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">
+            <p className="text-sm text-gray-600 mb-2">🔥 Pişirme Süresi</p>
+            <p className="text-2xl font-bold text-gray-900">
               {formatTime(recipe.cookTimeMinutes)}
             </p>
           </div>
           <div className="card p-6">
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">👥 Porsiyon</p>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">
+            <p className="text-sm text-gray-600 mb-2">👥 Porsiyon</p>
+            <p className="text-2xl font-bold text-gray-900">
               {formatServings(recipe.servings)}
             </p>
           </div>
           <div className="card p-6">
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">📊 Zorluk</p>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">
+            <p className="text-sm text-gray-600 mb-2">📊 Zorluk</p>
+            <p className="text-2xl font-bold text-gray-900">
               {formatDifficulty(recipe.difficulty)}
             </p>
           </div>
         </div>
 
         {/* Rating Card */}
-        <div className="mb-8 card p-6 bg-gradient-to-br from-brand-50 to-brand-100 dark:from-brand-900/20 dark:to-brand-800/20 border border-brand-200 dark:border-brand-700">
+        <div className="mb-8 card p-6 bg-gradient-to-br from-brand-50 to-brand-100 border border-brand-200">
           <div className="flex items-center space-x-4">
             <span className="text-5xl">⭐</span>
             <div>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white">
+              <p className="text-3xl font-bold text-gray-900">
                 {recipe.rating.toFixed(1)} / 5
               </p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-gray-600">
                 {recipe.reviewCount} yorum • {recipe.favoriteCount} kişi favoriledi
               </p>
             </div>
@@ -127,12 +127,12 @@ function RecipeDetailContent({ id }: { id: string }) {
           <div className="md:col-span-2">
             {/* Ingredients */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">🥘 Malzemeler</h2>
+              <h2 className="text-3xl font-bold mb-6 text-gray-900">🥘 Malzemeler</h2>
               <ul className="space-y-3">
                 {recipe.ingredients.map((ingredient) => (
                   <li
                     key={ingredient.id}
-                    className="flex items-start p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+                    className="flex items-start p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
                     onClick={() => toggleIngredient(ingredient.id)}
                   >
                     <input
@@ -147,14 +147,14 @@ function RecipeDetailContent({ id }: { id: string }) {
                         className={cn(
                           'font-medium transition-all',
                           checkedIngredients.has(ingredient.id)
-                            ? 'line-through text-gray-500 dark:text-gray-500'
-                            : 'text-gray-900 dark:text-white'
+                            ? 'line-through text-gray-500'
+                            : 'text-gray-900'
                         )}
                       >
                         {ingredient.amount} {ingredient.unit} {ingredient.name}
                       </p>
                       {ingredient.notes && (
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{ingredient.notes}</p>
+                        <p className="text-sm text-gray-600 mt-1">{ingredient.notes}</p>
                       )}
                     </div>
                   </li>
@@ -164,7 +164,7 @@ function RecipeDetailContent({ id }: { id: string }) {
 
             {/* Instructions */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">👨‍🍳 Hazırlama Adımları</h2>
+              <h2 className="text-3xl font-bold mb-6 text-gray-900">👨‍🍳 Hazırlama Adımları</h2>
               <ol className="space-y-6">
                 {recipe.instructions.map((instruction) => (
                   <li key={instruction.stepNumber} className="flex gap-4">
@@ -174,11 +174,11 @@ function RecipeDetailContent({ id }: { id: string }) {
                       </div>
                     </div>
                     <div className="flex-1">
-                      <p className="text-gray-900 dark:text-white text-lg leading-relaxed">
+                      <p className="text-gray-900 text-lg leading-relaxed">
                         {instruction.instruction}
                       </p>
                       {instruction.durationMinutes && (
-                        <p className="text-sm text-brand-600 dark:text-brand-400 mt-2 font-medium">
+                        <p className="text-sm text-brand-600 mt-2 font-medium">
                           ⏱️ {instruction.durationMinutes} dakika
                         </p>
                       )}
@@ -204,37 +204,37 @@ function RecipeDetailContent({ id }: { id: string }) {
             {/* Nutrition Info */}
             {recipe.nutrition && (
               <section className="sticky top-4">
-                <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+                <h3 className="text-2xl font-bold mb-4 text-gray-900">
                   🥗 Beslenme Bilgisi
                 </h3>
                 <div className="space-y-4">
                   <div className="card p-4">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Kalori</p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <p className="text-sm text-gray-600 mb-1">Kalori</p>
+                    <p className="text-2xl font-bold text-gray-900">
                       {recipe.nutrition.calories.toFixed(0)}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-500">kcal</p>
+                    <p className="text-xs text-gray-500">kcal</p>
                   </div>
                   <div className="card p-4">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Protein</p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <p className="text-sm text-gray-600 mb-1">Protein</p>
+                    <p className="text-2xl font-bold text-gray-900">
                       {recipe.nutrition.protein.toFixed(1)}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-500">g</p>
+                    <p className="text-xs text-gray-500">g</p>
                   </div>
                   <div className="card p-4">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Karbonhidrat</p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <p className="text-sm text-gray-600 mb-1">Karbonhidrat</p>
+                    <p className="text-2xl font-bold text-gray-900">
                       {recipe.nutrition.carbs.toFixed(1)}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-500">g</p>
+                    <p className="text-xs text-gray-500">g</p>
                   </div>
                   <div className="card p-4">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Yağ</p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <p className="text-sm text-gray-600 mb-1">Yağ</p>
+                    <p className="text-2xl font-bold text-gray-900">
                       {recipe.nutrition.fat.toFixed(1)}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-500">g</p>
+                    <p className="text-xs text-gray-500">g</p>
                   </div>
                 </div>
               </section>
@@ -245,7 +245,7 @@ function RecipeDetailContent({ id }: { id: string }) {
         {/* Author Info */}
         {recipe.author && (
           <section className="mt-12 card p-6">
-            <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">👨‍🍳 Aşçı Hakkında</h3>
+            <h3 className="text-lg font-bold mb-4 text-gray-900">👨‍🍳 Aşçı Hakkında</h3>
             <div className="flex items-center space-x-4">
               {recipe.author.avatarUrl && (
                 <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
@@ -258,8 +258,8 @@ function RecipeDetailContent({ id }: { id: string }) {
                 </div>
               )}
               <div>
-                <p className="font-semibold text-gray-900 dark:text-white">{recipe.author.name}</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="font-semibold text-gray-900">{recipe.author.name}</p>
+                <p className="text-sm text-gray-600">
                   {new Date(recipe.createdAt).toLocaleDateString('tr-TR', {
                     year: 'numeric',
                     month: 'long',
@@ -279,7 +279,7 @@ export default function RecipeDetailPage({ params }: { params: { id: string } })
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
+        <div className="min-h-screen bg-gray-50 p-4">
           <Skeleton className="h-96 w-full mb-8" />
           <Skeleton className="h-12 w-3/4 mb-4" />
           <Skeleton className="h-4 w-1/2 mb-12" />

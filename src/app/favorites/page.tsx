@@ -14,12 +14,12 @@ export default function FavoritesPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">
             Favorileri görmek için giriş yapın
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
+          <p className="text-gray-600 mb-6">
             Lütfen favorilerinizi görmek için giriş yapın
           </p>
           <Link
@@ -36,12 +36,12 @@ export default function FavoritesPage() {
   const favorites = favoritesData?.items || []
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       <div className="container py-12">
         {/* Header */}
         <div className="mb-12">
-          <h1 className="text-4xl font-bold mb-2 text-gray-900 dark:text-white">Favorilerim</h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <h1 className="text-4xl font-bold mb-2 text-gray-900">Favorilerim</h1>
+          <p className="text-gray-600">
             {favorites.length} {favorites.length === 1 ? 'tarif' : 'tarif'} kaydedildi
           </p>
         </div>
@@ -66,8 +66,8 @@ export default function FavoritesPage() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-xl text-gray-600 dark:text-gray-400 mb-4">Henüz favori tarifiniz yok</p>
-            <p className="text-gray-500 dark:text-gray-500 mb-6">
+            <p className="text-xl text-gray-600 mb-4">Henüz favori tarifiniz yok</p>
+            <p className="text-gray-500 mb-6">
               Kalp simgesine tıklayarak tarifleri favorilere ekleyin
             </p>
             <Link

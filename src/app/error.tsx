@@ -15,19 +15,19 @@ export default function Error({ error, reset }: ErrorProps) {
   }, [error])
 
   return (
-    <div className="min-h-screen dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4" style={{ backgroundColor: '#f9f7f4' }}>
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: '#FFFFFF' }}>
       <div className="text-center max-w-md">
         <div className="text-9xl mb-6 animate-pulse">⚠️</div>
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">
+        <h1 className="text-4xl font-bold text-gray-900 mb-3">
           Hata Oluştu!
         </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-400 mb-4">
+        <p className="text-lg text-gray-600 mb-4">
           Üzgünüz, bir şeyler yanlış gitti. Lütfen tekrar deneyin.
         </p>
 
         {error.message && (
-          <div className="mb-8 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-            <p className="text-sm text-red-700 dark:text-red-300 break-all">
+          <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-sm text-red-700 break-all">
               {error.message}
             </p>
           </div>
@@ -46,9 +46,9 @@ export default function Error({ error, reset }: ErrorProps) {
           <Link
             href="/recipes"
             className={cn(
-              'block px-6 py-4 bg-white dark:bg-gray-800 text-gray-900 dark:text-white',
-              'border-2 border-gray-300 dark:border-gray-600 font-semibold rounded-lg',
-              'hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200'
+              'block px-6 py-4 bg-white text-gray-900',
+              'border-2 border-gray-300 font-semibold rounded-lg',
+              'hover:bg-gray-50 transition-all duration-200'
             )}
           >
             Tarifləre Dön
@@ -56,8 +56,8 @@ export default function Error({ error, reset }: ErrorProps) {
           <Link
             href="/"
             className={cn(
-              'block px-6 py-4 text-gray-700 dark:text-gray-300 font-semibold rounded-lg',
-              'hover:text-brand-600 dark:hover:text-brand-400 transition-colors'
+              'block px-6 py-4 text-gray-700 font-semibold rounded-lg',
+              'hover:text-brand-600 transition-colors'
             )}
           >
             Ana Sayfaya Dön
@@ -65,7 +65,7 @@ export default function Error({ error, reset }: ErrorProps) {
         </div>
 
         {error.digest && (
-          <p className="mt-8 text-xs text-gray-500 dark:text-gray-500">
+          <p className="mt-8 text-xs text-gray-500">
             Error ID: {error.digest}
           </p>
         )}

@@ -56,12 +56,12 @@ export default function RecipesPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <main className="min-h-screen bg-gray-50">
       <div className="container py-12">
         {/* Header */}
         <div className="mb-12">
-          <h1 className="text-4xl font-bold mb-2 text-gray-900 dark:text-white">Tarif Koleksiyonu</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
+          <h1 className="text-4xl font-bold mb-2 text-gray-900">Tarif Koleksiyonu</h1>
+          <p className="text-gray-600 mb-6">
             {total} leziz tarifi keşfet ve hazırla
           </p>
 
@@ -72,7 +72,7 @@ export default function RecipesPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Tarif ara..."
-              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 dark:bg-gray-800 dark:text-white"
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
             <button
               type="submit"
@@ -84,7 +84,7 @@ export default function RecipesPage() {
 
           {/* Category Filter Chips */}
           <div className="mb-8">
-            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Kategoriler</p>
+            <p className="text-sm font-semibold text-gray-700 mb-3">Kategoriler</p>
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => {
@@ -95,7 +95,7 @@ export default function RecipesPage() {
                   'px-4 py-2 rounded-full font-medium transition-all duration-200 text-sm',
                   selectedCategory === null
                     ? 'bg-brand-500 text-white shadow-md'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 )}
               >
                 Tüm Kategoriler
@@ -111,7 +111,7 @@ export default function RecipesPage() {
                     'px-4 py-2 rounded-full font-medium transition-all duration-200 text-sm',
                     selectedCategory === category
                       ? 'bg-brand-500 text-white shadow-md'
-                      : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   )}
                 >
                   {categoryLabels[category]}
@@ -122,7 +122,7 @@ export default function RecipesPage() {
 
           {/* Sort Dropdown */}
           <div className="flex items-center gap-2">
-            <label htmlFor="sort" className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+            <label htmlFor="sort" className="text-sm font-semibold text-gray-700">
               Sıralama:
             </label>
             <select
@@ -132,7 +132,7 @@ export default function RecipesPage() {
                 setSortBy(e.target.value as 'newest' | 'rating' | 'popular')
                 setPage(1)
               }}
-              className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all"
+              className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all"
             >
               <option value="newest">En Yeni</option>
               <option value="rating">En Yüksek Rating</option>
@@ -143,7 +143,7 @@ export default function RecipesPage() {
 
         {/* Error State */}
         {error && (
-          <div className="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 p-4 rounded-lg mb-8">
+          <div className="bg-red-100 text-red-800 p-4 rounded-lg mb-8">
             <p className="font-semibold">Hata oluştu</p>
             <p className="text-sm">{error instanceof Error ? error.message : 'Bilinmeyen hata'}</p>
           </div>
@@ -168,7 +168,7 @@ export default function RecipesPage() {
         {/* Empty State */}
         {!isLoading && recipes.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-600 dark:text-gray-400 text-lg mb-4">
+            <p className="text-gray-600 text-lg mb-4">
               {search ? 'Aramanızla eşleşen tarif bulunamadı' : 'Henüz tarif yok'}
             </p>
             {search && (
@@ -184,20 +184,20 @@ export default function RecipesPage() {
 
         {/* Pagination */}
         {!isLoading && recipes.length > 0 && (
-          <div className="flex items-center justify-between pt-8 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between pt-8 border-t border-gray-200">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="px-4 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="px-4 py-2 bg-white text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               ← Önceki
             </button>
 
             <div className="flex items-center space-x-2">
-              <span className="text-gray-600 dark:text-gray-400">Sayfa</span>
-              <span className="font-bold text-gray-900 dark:text-white">{page}</span>
-              <span className="text-gray-600 dark:text-gray-400">/</span>
-              <span className="font-bold text-gray-900 dark:text-white">
+              <span className="text-gray-600">Sayfa</span>
+              <span className="font-bold text-gray-900">{page}</span>
+              <span className="text-gray-600">/</span>
+              <span className="font-bold text-gray-900">
                 {Math.ceil(total / 20)}
               </span>
             </div>
@@ -205,7 +205,7 @@ export default function RecipesPage() {
             <button
               onClick={() => setPage((p) => p + 1)}
               disabled={!hasMore}
-              className="px-4 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="px-4 py-2 bg-white text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               Sonraki →
             </button>

@@ -31,7 +31,7 @@ export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
           <div
             key={i}
             ref={i === 0 ? ref : undefined}
-            className={`bg-gray-200 dark:bg-gray-700 rounded animate-pulse ${className}`}
+            className={`bg-gray-200 rounded animate-pulse ${className}`}
             aria-label="Loading..."
             // a11y: Loading state'i screen reader'lara bil
             role="status"

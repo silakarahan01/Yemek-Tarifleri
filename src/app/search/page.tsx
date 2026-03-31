@@ -28,7 +28,7 @@ function SearchContent() {
   const popularSearches = ['Menemen', 'Çorba', 'Tatlı', 'Salata', 'Çay Saati Tarifleri']
 
   return (
-    <div className="min-h-screen dark:bg-gray-900" style={{ backgroundColor: '#f9f7f4' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#FFFFFF' }}>
       {/* Hero Search Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-brand-500 via-brand-600 to-brand-700 text-white py-16 md:py-24">
         {/* Background decoration */}
@@ -61,8 +61,8 @@ function SearchContent() {
                   placeholder="Tarif ara... (örn: Menemen, Çorba, Tatlı)"
                   className={cn(
                     'flex-1 px-6 py-4 rounded-lg',
-                    'bg-white/95 dark:bg-gray-800 text-gray-900 dark:text-white',
-                    'placeholder-gray-500 dark:placeholder-gray-400',
+                    'bg-white/95 text-gray-900',
+                    'placeholder-gray-500',
                     'border-2 border-transparent',
                     'focus:outline-none focus:border-white focus:ring-2 focus:ring-white/20',
                     'transition-all duration-200'
@@ -105,7 +105,7 @@ function SearchContent() {
       </section>
 
       {/* Results Section */}
-      <div className="dark:bg-gray-900 min-h-screen py-16" style={{ backgroundColor: '#f9f7f4' }}>
+      <div className="min-h-screen py-16" style={{ backgroundColor: '#FFFFFF' }}>
         <div className="container">
           {query ? (
             <>
@@ -118,7 +118,7 @@ function SearchContent() {
               ) : results && results.length > 0 ? (
                 <>
                   <div className="mb-8">
-                    <p className="text-gray-600 dark:text-gray-400">
+                    <p className="text-gray-600">
                       {results.length} tarif bulundu
                     </p>
                   </div>
@@ -136,10 +136,10 @@ function SearchContent() {
               ) : (
                 <div className="text-center py-20">
                   <div className="text-6xl mb-4">🔍</div>
-                  <p className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                  <p className="text-xl font-semibold text-gray-900 mb-2">
                     Tarif bulunamadı
                   </p>
-                  <p className="text-gray-600 dark:text-gray-400 mb-8">
+                  <p className="text-gray-600 mb-8">
                     „{query}" ile ilgili bir tarif yok. Farklı anahtar kelimelerle aramayı deneyin.
                   </p>
                   <div className="flex justify-center gap-4">
@@ -155,8 +155,8 @@ function SearchContent() {
                     <button
                       onClick={() => setSearchInput('')}
                       className={cn(
-                        'px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300',
-                        'rounded-lg font-medium hover:bg-gray-100 dark:hover:bg-gray-800',
+                        'px-6 py-3 border border-gray-300 text-gray-700',
+                        'rounded-lg font-medium hover:bg-gray-100',
                         'transition-colors'
                       )}
                     >
@@ -169,10 +169,10 @@ function SearchContent() {
           ) : (
             <div className="text-center py-20">
               <div className="text-6xl mb-4">📍</div>
-              <p className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              <p className="text-xl font-semibold text-gray-900 mb-2">
                 Tarif Ara
               </p>
-              <p className="text-gray-600 dark:text-gray-400 mb-8">
+              <p className="text-gray-600 mb-8">
                 Yukarıda arama çubuğunu kullanarak tarif bulmaya başlayın
               </p>
               <Link
@@ -194,7 +194,7 @@ function SearchContent() {
 
 export default function SearchPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen dark:bg-gray-900" style={{ backgroundColor: '#f9f7f4' }} />}>
+    <Suspense fallback={<div className="min-h-screen" style={{ backgroundColor: '#FFFFFF' }} />}>
       <SearchContent />
     </Suspense>
   )

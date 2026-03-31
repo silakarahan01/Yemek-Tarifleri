@@ -1,220 +1,327 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useAuthStore } from '@/store/auth.store'
 import { useLogoutMutation } from '@/services/query/auth.queries'
 
+const NAV_LINKS = [
+  { href: '/recipes', label: 'Tarifler' },
+  { href: '/search',  label: 'Keşfet' },
+]
+
 export function Header() {
-  const router = useRouter()
+  const router   = useRouter()
+  const pathname = usePathname()
   const { isAuthenticated, user } = useAuthStore()
   const { mutate: logout } = useLogoutMutation()
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('')
 
-  // Initialize dark mode from localStorage and system preference
-  useEffect(() => {
-    const isDarkMode =
-      localStorage.getItem('theme') === 'dark' ||
-      (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark')
-    }
-  }, [])
+  const [menuOpen,    setMenuOpen]    = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchOpen,  setSearchOpen]  = useState(false)
 
   const handleLogout = () => {
     logout()
-    setMobileMenuOpen(false)
-    router.push('/recipes')
+    setMenuOpen(false)
+    router.push('/')
   }
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: { preventDefault: () => void }) => {
     e.preventDefault()
     if (searchQuery.trim()) {
       router.push(`/search?q=${encodeURIComponent(searchQuery)}`)
       setSearchQuery('')
+      setSearchOpen(false)
     }
   }
 
+  const isActive = (href: string) => pathname === href
+
   return (
-    <header className="sticky top-0 z-50 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
-      <div className="container h-16">
-        <div className="flex items-center justify-between h-full gap-4">
-          {/* Logo */}
-          <Link href="/recipes" className="flex items-center space-x-2 font-bold text-xl flex-shrink-0">
-            <span className="text-2xl">🍳</span>
-            <span className="text-gray-900 dark:text-white">TarifKüpü</span>
+    <header
+      className="sticky top-0 z-50"
+      style={{
+        backgroundColor: '#FFFFFF',
+        borderBottom: '1px solid #F3F4F6',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+      }}
+    >
+      <div className="container">
+        <div className="flex items-center justify-between h-16 gap-4">
+
+          {/* ── Logo ── */}
+          <Link
+            href="/"
+            className="flex items-center gap-2 flex-shrink-0"
+            style={{ textDecoration: 'none' }}
+          >
+            <div
+              className="flex items-center justify-center w-8 h-8 rounded-lg text-white text-lg font-bold"
+              style={{ backgroundColor: '#F97316' }}
+            >
+              🍳
+            </div>
+            <span style={{ fontWeight: 800, fontSize: '1.15rem', color: '#1F2937', letterSpacing: '-0.02em' }}>
+              Tarif<span style={{ color: '#F97316' }}>Küpü</span>
+            </span>
           </Link>
 
-          {/* Desktop Search Bar - Center */}
-          <form onSubmit={handleSearch} className="hidden md:block flex-1 max-w-md mx-auto relative">
+          {/* ── Desktop Nav Links ── */}
+          <nav className="hidden md:flex items-center gap-1">
+            {NAV_LINKS.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                style={{
+                  padding: '0.375rem 0.875rem',
+                  borderRadius: '0.5rem',
+                  fontWeight: 500,
+                  fontSize: '0.9rem',
+                  color: isActive(href) ? '#F97316' : '#374151',
+                  backgroundColor: isActive(href) ? '#FFF7ED' : 'transparent',
+                  textDecoration: 'none',
+                  transition: 'all .15s',
+                }}
+              >
+                {label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* ── Desktop Search ── */}
+          <form
+            onSubmit={handleSearch}
+            className="hidden md:flex items-center flex-1 max-w-sm mx-4"
+            style={{
+              background: '#F9FAFB',
+              border: '1.5px solid #E5E7EB',
+              borderRadius: '0.75rem',
+              overflow: 'hidden',
+              padding: '0 0.25rem 0 1rem',
+              gap: '0.5rem',
+            }}
+          >
+            <svg
+              width="16" height="16" viewBox="0 0 24 24"
+              fill="none" stroke="#9CA3AF" strokeWidth="2"
+              strokeLinecap="round" strokeLinejoin="round"
+              style={{ flexShrink: 0 }}
+            >
+              <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Tarif ara..."
-              className="w-full px-4 py-2 pr-10 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all"
+              placeholder="Tarif, malzeme ara..."
+              style={{
+                flex: 1,
+                background: 'transparent',
+                border: 'none',
+                outline: 'none',
+                fontSize: '0.875rem',
+                color: '#1F2937',
+                padding: '0.6rem 0',
+              }}
             />
-            <button
-              type="submit"
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
-              aria-label="Ara"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-            </button>
+            {searchQuery && (
+              <button
+                type="submit"
+                style={{
+                  background: '#F97316',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '0.5rem',
+                  padding: '0.3rem 0.75rem',
+                  fontSize: '0.8rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  margin: '0.2rem 0',
+                }}
+              >
+                Ara
+              </button>
+            )}
           </form>
 
-          {/* Desktop Navigation - Right Side */}
-          <nav className="hidden md:flex items-center space-x-6 flex-shrink-0">
-
+          {/* ── Desktop Auth ── */}
+          <div className="hidden md:flex items-center gap-3 flex-shrink-0">
             {isAuthenticated ? (
               <>
                 <Link
                   href="/favorites"
-                  className="text-gray-700 dark:text-gray-300 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '0.375rem',
+                    padding: '0.4rem 0.875rem',
+                    background: '#FEE2E2', color: '#EF4444',
+                    borderRadius: '0.625rem',
+                    fontSize: '0.875rem', fontWeight: 600,
+                    textDecoration: 'none',
+                  }}
                 >
-                  ❤️ Favorilerim
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#EF4444" stroke="#EF4444" strokeWidth="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                  </svg>
+                  Favorilerim
                 </Link>
-
-                <div className="flex items-center space-x-4 pl-6 border-l border-gray-200 dark:border-gray-700">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
-                    Merhaba, {user?.name}
-                  </span>
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: '0.75rem',
+                  paddingLeft: '0.75rem',
+                  borderLeft: '1px solid #E5E7EB',
+                }}>
+                  <div style={{
+                    width: '32px', height: '32px', borderRadius: '50%',
+                    background: '#FFEDD5', color: '#F97316',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontWeight: 700, fontSize: '0.85rem',
+                  }}>
+                    {user?.name?.charAt(0).toUpperCase()}
+                  </div>
                   <button
                     onClick={handleLogout}
-                    className="px-4 py-2 text-red-600 hover:text-red-700 font-medium transition-colors"
+                    style={{
+                      background: 'none', border: 'none', cursor: 'pointer',
+                      color: '#6B7280', fontSize: '0.875rem', fontWeight: 500,
+                    }}
                   >
                     Çıkış
                   </button>
                 </div>
               </>
             ) : (
-              <div className="flex items-center space-x-3 pl-6 border-l border-gray-200 dark:border-gray-700">
+              <>
                 <Link
                   href="/login"
-                  className="text-gray-700 dark:text-gray-300 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
+                  style={{
+                    padding: '0.5rem 1rem',
+                    color: '#374151', fontWeight: 600, fontSize: '0.875rem',
+                    textDecoration: 'none',
+                  }}
                 >
                   Giriş Yap
                 </Link>
                 <Link
                   href="/register"
-                  className="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"
+                  style={{
+                    padding: '0.5rem 1.125rem',
+                    background: '#F97316', color: '#fff',
+                    borderRadius: '0.625rem',
+                    fontWeight: 700, fontSize: '0.875rem',
+                    textDecoration: 'none',
+                    boxShadow: '0 2px 8px rgba(249,115,22,.3)',
+                  }}
                 >
-                  Kaydol
+                  Ücretsiz Kaydol
                 </Link>
-              </div>
+              </>
             )}
-          </nav>
+          </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-gray-700 dark:text-gray-300 flex-shrink-0"
-            aria-label="Toggle menu"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          {/* ── Mobile: Search + Burger ── */}
+          <div className="flex md:hidden items-center gap-2">
+            <button
+              onClick={() => setSearchOpen(!searchOpen)}
+              style={{
+                padding: '0.5rem', background: 'none', border: 'none',
+                color: '#6B7280', cursor: 'pointer',
+              }}
+              aria-label="Arama"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+            </button>
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              style={{
+                padding: '0.5rem', background: 'none', border: 'none',
+                color: '#374151', cursor: 'pointer',
+              }}
+              aria-label="Menü"
+            >
+              {menuOpen
+                ? <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                : <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+              }
+            </button>
+          </div>
         </div>
+
+        {/* ── Mobile Search Bar ── */}
+        {searchOpen && (
+          <div style={{ paddingBottom: '0.75rem' }} className="md:hidden">
+            <form onSubmit={handleSearch} style={{
+              display: 'flex', alignItems: 'center', gap: '0.5rem',
+              background: '#F9FAFB', border: '1.5px solid #E5E7EB',
+              borderRadius: '0.75rem', padding: '0 0.5rem 0 1rem',
+            }}>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Tarif ara..."
+                autoFocus
+                style={{
+                  flex: 1, background: 'transparent', border: 'none',
+                  outline: 'none', fontSize: '0.9rem', color: '#1F2937',
+                  padding: '0.7rem 0',
+                }}
+              />
+              <button type="submit" className="btn-orange" style={{ padding: '0.35rem 0.875rem', fontSize: '0.8rem' }}>
+                Ara
+              </button>
+            </form>
+          </div>
+        )}
       </div>
 
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-          <nav className="container py-4 space-y-2">
-            <Link
-              href="/recipes"
-              className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Tarifler
-            </Link>
+      {/* ── Mobile Menu ── */}
+      {menuOpen && (
+        <div style={{
+          borderTop: '1px solid #F3F4F6',
+          background: '#FFFFFF',
+          padding: '1rem',
+        }} className="md:hidden">
+          <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+            {NAV_LINKS.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  padding: '0.75rem 1rem',
+                  borderRadius: '0.625rem',
+                  fontWeight: 500, color: isActive(href) ? '#F97316' : '#374151',
+                  background: isActive(href) ? '#FFF7ED' : 'transparent',
+                  textDecoration: 'none', fontSize: '0.95rem',
+                }}
+              >
+                {label}
+              </Link>
+            ))}
 
-            {/* Mobile Search Form */}
-            <form onSubmit={handleSearch} className="px-4 py-2">
-              <div className="relative">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Tarif ara..."
-                  className="w-full px-4 py-2 pr-10 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all"
-                />
-                <button
-                  type="submit"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
-                  aria-label="Ara"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </form>
-
-            {isAuthenticated ? (
-              <>
-                <Link
-                  href="/favorites"
-                  className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  ❤️ Favorilerim
-                </Link>
-                <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
-                  <p className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400">
-                    Merhaba, {user?.name}
-                  </p>
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                  >
-                    Çıkış
+            <div style={{ borderTop: '1px solid #F3F4F6', marginTop: '0.5rem', paddingTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              {isAuthenticated ? (
+                <>
+                  <Link href="/favorites" onClick={() => setMenuOpen(false)} style={{ padding: '0.75rem 1rem', borderRadius: '0.625rem', fontWeight: 500, color: '#EF4444', background: '#FEF2F2', textDecoration: 'none' }}>
+                    ❤️ Favorilerim
+                  </Link>
+                  <button onClick={handleLogout} style={{ padding: '0.75rem 1rem', borderRadius: '0.625rem', fontWeight: 500, color: '#6B7280', background: 'none', border: 'none', textAlign: 'left', cursor: 'pointer' }}>
+                    Çıkış Yap
                   </button>
-                </div>
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Giriş Yap
-                </Link>
-                <Link
-                  href="/register"
-                  className="block px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors text-center"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Kaydol
-                </Link>
-              </>
-            )}
+                </>
+              ) : (
+                <>
+                  <Link href="/login" onClick={() => setMenuOpen(false)} style={{ padding: '0.75rem 1rem', borderRadius: '0.625rem', fontWeight: 600, color: '#374151', textDecoration: 'none', textAlign: 'center', border: '1.5px solid #E5E7EB' }}>
+                    Giriş Yap
+                  </Link>
+                  <Link href="/register" onClick={() => setMenuOpen(false)} style={{ padding: '0.75rem 1rem', borderRadius: '0.625rem', fontWeight: 700, color: '#fff', background: '#F97316', textDecoration: 'none', textAlign: 'center' }}>
+                    Ücretsiz Kaydol
+                  </Link>
+                </>
+              )}
+            </div>
           </nav>
         </div>
       )}

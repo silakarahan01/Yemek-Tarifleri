@@ -124,28 +124,28 @@ export default function RegisterPage() {
       </div>
 
       {/* Right Panel - Form */}
-      <div className="flex-1 flex items-center justify-center dark:bg-gray-900 p-4 md:p-12 overflow-y-auto" style={{ backgroundColor: '#f9f7f4' }}>
+      <div className="flex-1 flex items-center justify-center p-4 md:p-12 overflow-y-auto" style={{ backgroundColor: '#FFFFFF' }}>
         <div className="w-full max-w-md space-y-8 py-8">
           {/* Mobile Logo */}
           <div className="lg:hidden text-center mb-8">
             <div className="text-5xl mb-3">🍳</div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">TarifKüpü</h1>
+            <h1 className="text-3xl font-bold text-gray-900">TarifKüpü</h1>
           </div>
 
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Kaydol</h2>
-            <p className="mt-2 text-gray-600 dark:text-gray-400">Ücretsiz hesap oluştur ve başla</p>
+            <h2 className="text-3xl font-bold text-gray-900">Kaydol</h2>
+            <p className="mt-2 text-gray-600">Ücretsiz hesap oluştur ve başla</p>
           </div>
 
           {errors.submit && (
-            <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200 rounded-lg text-sm">
+            <div className="p-4 bg-red-50 border border-red-200 text-red-800 rounded-lg text-sm">
               {errors.submit}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                 Ad Soyad
               </label>
               <input
@@ -157,21 +157,20 @@ export default function RegisterPage() {
                 className={cn(
                   'w-full px-4 py-3 border rounded-lg transition-all',
                   'focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500',
-                  'dark:bg-gray-800 dark:text-white dark:border-gray-600',
                   errors.name
-                    ? 'border-red-500 dark:border-red-500'
-                    : 'border-gray-300 dark:border-gray-600'
+                    ? 'border-red-500'
+                    : 'border-gray-300'
                 )}
                 placeholder="Adınız Soyadınız"
                 disabled={isPending}
               />
               {errors.name && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.name}</p>
+                <p className="mt-1 text-sm text-red-600">{errors.name}</p>
               )}
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                 E-posta Adresi
               </label>
               <input
@@ -183,21 +182,20 @@ export default function RegisterPage() {
                 className={cn(
                   'w-full px-4 py-3 border rounded-lg transition-all',
                   'focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500',
-                  'dark:bg-gray-800 dark:text-white dark:border-gray-600',
                   errors.email
-                    ? 'border-red-500 dark:border-red-500'
-                    : 'border-gray-300 dark:border-gray-600'
+                    ? 'border-red-500'
+                    : 'border-gray-300'
                 )}
                 placeholder="örnek@mail.com"
                 disabled={isPending}
               />
               {errors.email && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.email}</p>
+                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
               )}
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                 Şifre
               </label>
               <div className="relative">
@@ -210,10 +208,9 @@ export default function RegisterPage() {
                   className={cn(
                     'w-full px-4 py-3 border rounded-lg transition-all',
                     'focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500',
-                    'dark:bg-gray-800 dark:text-white dark:border-gray-600',
                     errors.password
-                      ? 'border-red-500 dark:border-red-500'
-                      : 'border-gray-300 dark:border-gray-600'
+                      ? 'border-red-500'
+                      : 'border-gray-300'
                   )}
                   placeholder="••••••••"
                   disabled={isPending}
@@ -221,19 +218,19 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                  className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
                   disabled={isPending}
                 >
                   {showPassword ? '👁️' : '👁️‍🗨️'}
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.password}</p>
+                <p className="mt-1 text-sm text-red-600">{errors.password}</p>
               )}
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
                 Şifreyi Onayla
               </label>
               <div className="relative">
@@ -246,10 +243,9 @@ export default function RegisterPage() {
                   className={cn(
                     'w-full px-4 py-3 border rounded-lg transition-all',
                     'focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500',
-                    'dark:bg-gray-800 dark:text-white dark:border-gray-600',
                     errors.confirmPassword
-                      ? 'border-red-500 dark:border-red-500'
-                      : 'border-gray-300 dark:border-gray-600'
+                      ? 'border-red-500'
+                      : 'border-gray-300'
                   )}
                   placeholder="••••••••"
                   disabled={isPending}
@@ -257,14 +253,14 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                  className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
                   disabled={isPending}
                 >
                   {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
                 </button>
               </div>
               {errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.confirmPassword}</p>
+                <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
               )}
             </div>
 
@@ -278,12 +274,12 @@ export default function RegisterPage() {
                 className="mt-1 w-4 h-4 rounded border-gray-300 accent-brand-500 cursor-pointer"
                 disabled={isPending}
               />
-              <label htmlFor="acceptTerms" className="text-sm text-gray-700 dark:text-gray-300">
+              <label htmlFor="acceptTerms" className="text-sm text-gray-700">
                 <span className="font-medium">Şartları ve koşulları</span> okudum ve kabul ediyorum
               </label>
             </div>
             {errors.acceptTerms && (
-              <p className="text-sm text-red-600 dark:text-red-400 -mt-3">{errors.acceptTerms}</p>
+              <p className="text-sm text-red-600 -mt-3">{errors.acceptTerms}</p>
             )}
 
             <button
@@ -308,19 +304,19 @@ export default function RegisterPage() {
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+              <div className="w-full border-t border-gray-300"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 dark:bg-gray-900 text-gray-500" style={{ backgroundColor: '#f9f7f4' }}>Zaten hesabınız var mı?</span>
+              <span className="px-2 text-gray-500" style={{ backgroundColor: '#FFFFFF' }}>Zaten hesabınız var mı?</span>
             </div>
           </div>
 
           <Link
             href="/login"
             className={cn(
-              'block w-full py-3 text-center border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300',
+              'block w-full py-3 text-center border border-gray-300 text-gray-700',
               'font-medium rounded-lg transition-all duration-200',
-              'hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-500/50'
+              'hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500/50'
             )}
           >
             Giriş Yap

@@ -34,7 +34,7 @@ export default function HomePage() {
   ]
 
   return (
-    <main className="min-h-screen dark:bg-gray-900" style={{ backgroundColor: '#f9f7f4' }}>
+    <main className="min-h-screen" style={{ backgroundColor: '#FFFFFF' }}>
       {/* Hero Section */}
       <section style={{ backgroundColor: '#f97316' }} className="relative overflow-hidden text-white py-20 md:py-32">
         {/* Content */}
@@ -81,23 +81,23 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50">
+      <section className="py-16 md:py-24 bg-gray-50">
         <div className="container">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900 dark:text-white">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-900">
             Neden TarifKüpü?
           </h2>
-          <p className="text-center text-gray-600 dark:text-gray-400 mb-16 max-w-2xl mx-auto">
+          <p className="text-center text-gray-600 mb-16 max-w-2xl mx-auto">
             En iyi tarif deneyimini yaşamak için tasarlandı
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <div key={index} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-8 text-center space-y-4">
+              <div key={index} className="bg-white rounded-xl shadow-sm p-8 text-center space-y-4">
                 <div className="text-5xl">{feature.icon}</div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                <h3 className="text-xl font-bold text-gray-900">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                <p className="text-gray-600 leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -110,10 +110,10 @@ export default function HomePage() {
       <section className="py-16 md:py-24">
         <div className="container space-y-12">
           <div className="text-center space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
               🔥 Popüler Tarifler
             </h2>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-600">
               Şu anda herkese favorite olan tarifler
             </p>
           </div>
@@ -150,12 +150,12 @@ export default function HomePage() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 md:py-24 border-t border-gray-200 dark:border-gray-800">
+      <section className="py-16 md:py-24 border-t border-gray-200">
         <div className="container max-w-2xl text-center space-y-8">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-3xl font-bold text-gray-900">
             Harika Tarifler Hiç Kaçırma
           </h2>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-600">
             En yeni ve en popüler tarifler doğrudan sana gelsin
           </p>
 
@@ -168,7 +168,7 @@ export default function HomePage() {
               <a
                 key={index}
                 href="#"
-                className="w-12 h-12 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center text-xl font-bold text-orange-600 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600"
+                className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-xl font-bold text-orange-600 hover:bg-gray-50 border border-gray-300"
               >
                 {social.icon}
               </a>

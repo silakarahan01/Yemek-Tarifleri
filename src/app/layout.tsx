@@ -52,7 +52,7 @@ interface RootLayoutProps {
  */
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="tr" suppressHydrationWarning>
+    <html lang="tr" suppressHydrationWarning style={{ colorScheme: 'light' }}>
       <head>
         {/* Preconnect to API */}
         <link rel="preconnect" href={process.env.NEXT_PUBLIC_API_URL || ''} />
@@ -65,7 +65,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
 
-      <body className="dark:bg-gray-900 text-gray-900 dark:text-white flex flex-col min-h-screen" style={{ backgroundColor: '#f9f7f4' }}>
+      {/* Dark mode'u tamamen devre dışı bırak */}
+      <script dangerouslySetInnerHTML={{ __html: `
+        document.documentElement.classList.remove('dark');
+        localStorage.removeItem('theme');
+      `}} />
+      <body className="flex flex-col min-h-screen" style={{ backgroundColor: '#FFFFFF', color: '#1F2937', colorScheme: 'light' }}>
         {/* Client-side providers */}
         <Providers>
           <Header />

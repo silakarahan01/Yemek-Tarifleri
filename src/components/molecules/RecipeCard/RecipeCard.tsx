@@ -46,11 +46,11 @@ interface RecipeCardProps {
 const getDifficultyColor = (difficulty: RecipeDifficulty): string => {
   switch (difficulty) {
     case RecipeDifficulty.EASY:
-      return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+      return 'bg-green-100 text-green-800'
     case RecipeDifficulty.MEDIUM:
-      return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+      return 'bg-yellow-100 text-yellow-800'
     case RecipeDifficulty.HARD:
-      return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+      return 'bg-red-100 text-red-800'
   }
 }
 
@@ -113,7 +113,7 @@ export const RecipeCard = React.memo<RecipeCardProps>(
         aria-label={`Recipe: ${recipe.title}`}
       >
         {/* Image Container */}
-        <div className="relative h-48 bg-gray-200 dark:bg-gray-700 overflow-hidden group">
+        <div className="relative h-48 bg-gray-200 overflow-hidden group">
           <Link href={`/recipes/${recipe.id}`} className="block w-full h-full">
             <Image
               src={recipe.imageUrl}
@@ -148,8 +148,8 @@ export const RecipeCard = React.memo<RecipeCardProps>(
             disabled={!onFavoriteClick}
             className={cn(
               'absolute top-3 left-3 p-2 rounded-full',
-              'bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm',
-              'hover:bg-white dark:hover:bg-gray-900',
+              'bg-white/90 backdrop-blur-sm',
+              'hover:bg-white',
               'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500',
               'disabled:opacity-50 disabled:cursor-not-allowed',
               'transition-all duration-200'
@@ -169,15 +169,15 @@ export const RecipeCard = React.memo<RecipeCardProps>(
           {/* Title */}
           <Link href={`/recipes/${recipe.id}`}>
             <h3 className={cn(
-              'font-bold text-lg text-gray-900 dark:text-white line-clamp-2',
-              'hover:text-brand-600 dark:hover:text-brand-400 transition-colors'
+              'font-bold text-lg text-gray-900 line-clamp-2',
+              'hover:text-brand-600 transition-colors'
             )}>
               {recipe.title}
             </h3>
           </Link>
 
           {/* Meta Info */}
-          <div className="mt-3 flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
+          <div className="mt-3 flex items-center justify-between text-sm text-gray-600">
             <div className="flex items-center space-x-3">
               {/* Total Time */}
               <div className="flex items-center" aria-label={`Total time: ${totalTime} minutes`}>
@@ -199,7 +199,7 @@ export const RecipeCard = React.memo<RecipeCardProps>(
           </div>
 
           {/* Review Count */}
-          <p className="mt-2 text-xs text-gray-500 dark:text-gray-500">
+          <p className="mt-2 text-xs text-gray-500">
             {recipe.reviewCount} {recipe.reviewCount === 1 ? 'review' : 'reviews'}
           </p>
         </div>
