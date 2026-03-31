@@ -54,22 +54,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="tr" suppressHydrationWarning style={{ colorScheme: 'light' }}>
       <head>
-        {/* Preconnect to API */}
         <link rel="preconnect" href={process.env.NEXT_PUBLIC_API_URL || ''} />
-
-        {/* Fonts - Inter (body), Georgia (optional serif) */}
         <link rel="preload" as="font" href="/fonts/inter-var.woff2" type="font/woff2" />
-
-        {/* Favicon */}
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        {/* Dark class ve localStorage temizle — tek tema */}
+        <script dangerouslySetInnerHTML={{ __html: `document.documentElement.classList.remove('dark');try{localStorage.removeItem('theme')}catch(e){}` }} />
       </head>
 
-      {/* Dark mode'u tamamen devre dışı bırak */}
-      <script dangerouslySetInnerHTML={{ __html: `
-        document.documentElement.classList.remove('dark');
-        localStorage.removeItem('theme');
-      `}} />
       <body className="flex flex-col min-h-screen" style={{ backgroundColor: '#FFFFFF', color: '#1F2937', colorScheme: 'light' }}>
         {/* Client-side providers */}
         <Providers>

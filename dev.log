@@ -1,0 +1,53 @@
+
+> yemek-tarifleri-sitesi@1.0.0 dev
+> next dev
+
+ ⚠ Port 3000 is in use by process 19356, using available port 3001 instead.
+   ▲ Next.js 15.5.14
+   - Local:        http://localhost:3001
+   - Network:      http://172.18.160.1:3001
+   - Environments: .env.local
+
+ ✓ Starting...
+   Using tsconfig file: ./tsconfig.json
+ ✓ Ready in 2.3s
+ ○ Compiling / ...
+ ✓ Compiled / in 3.7s (1392 modules)
+ GET / 200 in 4144ms
+ ○ Compiling /recipes ...
+ ✓ Compiled /recipes in 1619ms (1452 modules)
+ GET /recipes 200 in 1874ms
+ GET /recipes 200 in 70ms
+ ✓ Compiled /recipes/[id] in 342ms (1447 modules)
+Error: Route "/recipes/[id]" used `params.id`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at RecipeDetailPage (src\app\recipes\[id]\page.tsx:289:39)
+  287 |       }
+  288 |     >
+> 289 |       <RecipeDetailContent id={params.id} />
+      |                                       ^
+  290 |     </Suspense>
+  291 |   )
+  292 | }
+ ⨯ Error [ApiError]: localStorage is not defined
+    at normalizeErrorResponse (src\services\api\axios.instance.ts:126:10)
+    at eval (src\services\api\axios.instance.ts:114:22)
+    at async RecipeService.getRecipeById (src\services\api\recipe.service.ts:54:22)
+    at async RecipeService.getRecipeById (src\services\api\recipe.service.ts:54:22)
+  124 |   const errorData = error.response?.data as ApiErrorResponse | undefined
+  125 |
+> 126 |   return new ApiError(
+      |          ^
+  127 |     statusCode,
+  128 |     errorData?.code || 'UNKNOWN_ERROR',
+  129 |     errorData?.message || error.message || 'An error occurred', {
+  statusCode: 500,
+  code: 'UNKNOWN_ERROR',
+  details: undefined,
+  digest: '1495318322'
+}
+ GET /recipes/1 200 in 8291ms
+ ✓ Compiled /_not-found in 360ms (1451 modules)
+ GET /api/recipes 404 in 613ms
+ GET /recipes 200 in 96ms
+ GET /recipes 200 in 60ms
+ ✓ Compiled in 447ms (1465 modules)
