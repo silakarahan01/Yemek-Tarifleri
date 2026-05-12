@@ -1,13 +1,15 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { Suspense, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { useLoginMutation } from '@/services/query/auth.queries'
 import { cn } from '@/lib/utils'
 
-export default function LoginPage() {
+function LoginPageInner() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const nextPath = searchParams.get('next') || '/recipes'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -43,7 +45,7 @@ export default function LoginPage() {
       { email, password },
       {
         onSuccess: () => {
-          router.push('/recipes')
+          router.push(nextPath)
         },
         onError: (error) => {
           setErrors({ submit: error.message || 'Giriş başarısız' })
@@ -209,5 +211,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Yükleniyor...</div>}>
+      <LoginPageInner />
+    </Suspense>
   )
 }

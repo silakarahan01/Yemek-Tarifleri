@@ -4,10 +4,14 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Button, btnClass } from '@/components/atoms/Button'
+import { useTrendingRecipesQuery } from '@/services/query/recipe.queries'
+import { RecipeCard } from '@/components/molecules/RecipeCard/RecipeCard'
+import { RecipeCardSkeleton } from '@/components/molecules/RecipeCard/RecipeCardSkeleton'
 
 export default function HomePage() {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
+  const { data: trending, isLoading: trendingLoading } = useTrendingRecipesQuery()
 
   const handleSearch = (e: { preventDefault: () => void }) => {
     e.preventDefault()
@@ -91,21 +95,11 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { name: 'Menemen', emoji: '🍳', color: 'from-orange-300 to-orange-100' },
-              { name: 'Çoban Salatası', emoji: '🥗', color: 'from-yellow-300 to-yellow-100' },
-              { name: 'Mercimek Çorbası', emoji: '🍲', color: 'from-red-300 to-red-100' },
-              { name: 'Baklava', emoji: '🍯', color: 'from-orange-200 to-yellow-100' },
-            ].map((recipe, index) => (
-              <Link
-                key={index}
-                href="/recipes"
-                className={`bg-gradient-to-br ${recipe.color} p-8 text-center space-y-4 rounded-xl shadow-sm hover:shadow-md transition-shadow`}
-              >
-                <div className="text-6xl">{recipe.emoji}</div>
-                <h3 className="font-semibold text-gray-900">{recipe.name}</h3>
-              </Link>
-            ))}
+            {trendingLoading
+              ? Array.from({ length: 4 }).map((_, i) => <RecipeCardSkeleton key={i} />)
+              : (trending ?? []).slice(0, 4).map((recipe) => (
+                  <RecipeCard key={recipe.id} recipe={recipe} />
+                ))}
           </div>
 
           <div className="text-center pt-8">

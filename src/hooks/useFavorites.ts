@@ -64,8 +64,8 @@ export function useFavorites(): UseFavoritesReturn {
         // 1. Optimistic: Local state'i hemen güncelle
         storeAddFavorite(recipeId)
 
-        // 2. Backend'e ilet
-        await RecipeService.addFavorite(recipeId)
+        // 2. Backend'e ilet (toggle endpoint — favori değilse ekler)
+        await RecipeService.toggleFavorite(recipeId)
       } catch (err) {
         // 3. Hata varsa rollback
         const errorMsg = err instanceof Error ? err.message : 'Failed to add favorite'

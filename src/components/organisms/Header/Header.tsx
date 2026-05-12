@@ -29,7 +29,7 @@ export function Header() {
   const handleSearch = (e: { preventDefault: () => void }) => {
     e.preventDefault()
     if (searchQuery.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searchQuery)}`)
+      router.push(`/recipes?search=${encodeURIComponent(searchQuery)}`)
       setSearchQuery('')
       setSearchOpen(false)
     }
@@ -149,6 +149,18 @@ export function Header() {
             {isAuthenticated ? (
               <>
                 <Link
+                  href="/recipes/create"
+                  style={{
+                    padding: '0.4rem 0.875rem',
+                    background: '#FFF7ED', color: '#F97316',
+                    borderRadius: '0.625rem',
+                    fontSize: '0.875rem', fontWeight: 600,
+                    textDecoration: 'none',
+                  }}
+                >
+                  + Tarif Ekle
+                </Link>
+                <Link
                   href="/favorites"
                   style={{
                     display: 'flex', alignItems: 'center', gap: '0.375rem',
@@ -169,14 +181,14 @@ export function Header() {
                   paddingLeft: '0.75rem',
                   borderLeft: '1px solid #E5E7EB',
                 }}>
-                  <div style={{
+                  <Link href="/profile" aria-label="Profilim" style={{
                     width: '32px', height: '32px', borderRadius: '50%',
                     background: '#FFEDD5', color: '#F97316',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontWeight: 700, fontSize: '0.85rem',
+                    fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none',
                   }}>
                     {user?.name?.charAt(0).toUpperCase()}
-                  </div>
+                  </Link>
                   <button
                     onClick={handleLogout}
                     style={{
@@ -303,6 +315,12 @@ export function Header() {
             <div style={{ borderTop: '1px solid #F3F4F6', marginTop: '0.5rem', paddingTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               {isAuthenticated ? (
                 <>
+                  <Link href="/profile" onClick={() => setMenuOpen(false)} style={{ padding: '0.75rem 1rem', borderRadius: '0.625rem', fontWeight: 500, color: '#374151', textDecoration: 'none' }}>
+                    👤 Profilim
+                  </Link>
+                  <Link href="/recipes/create" onClick={() => setMenuOpen(false)} style={{ padding: '0.75rem 1rem', borderRadius: '0.625rem', fontWeight: 500, color: '#F97316', background: '#FFF7ED', textDecoration: 'none' }}>
+                    + Tarif Ekle
+                  </Link>
                   <Link href="/favorites" onClick={() => setMenuOpen(false)} style={{ padding: '0.75rem 1rem', borderRadius: '0.625rem', fontWeight: 500, color: '#EF4444', background: '#FEF2F2', textDecoration: 'none' }}>
                     ❤️ Favorilerim
                   </Link>

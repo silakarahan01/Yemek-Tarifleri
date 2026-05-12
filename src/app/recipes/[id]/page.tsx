@@ -1,18 +1,31 @@
 'use client'
 
-import { Suspense, useState } from 'react'
+import { Suspense, use, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRecipeDetailQuery } from '@/services/query/recipe.queries'
+import { useRouter } from 'next/navigation'
+import { useRecipeDetailQuery, useDeleteRecipeMutation } from '@/services/query/recipe.queries'
 import { useFavorites } from '@/hooks/useFavorites'
+import { useAuthStore } from '@/store/auth.store'
 import { Skeleton } from '@/components/atoms/Skeleton'
 import { formatTime, formatDifficulty, formatServings } from '@/utils/formatters'
 import { cn } from '@/lib/utils'
 
 function RecipeDetailContent({ id }: { id: string }) {
+  const router = useRouter()
   const { data: recipe } = useRecipeDetailQuery(id)
   const { isFavorite, toggleFavorite } = useFavorites()
+  const { user, isAuthenticated } = useAuthStore()
+  const deleteMutation = useDeleteRecipeMutation()
   const [checkedIngredients, setCheckedIngredients] = useState<Set<string>>(new Set())
+  const isOwner = isAuthenticated && !!user && recipe.author?.id === user.id
+
+  const handleDelete = () => {
+    if (!confirm(`"${recipe.title}" tarifini silmek istediğinize emin misiniz?`)) return
+    deleteMutation.mutate(id, {
+      onSuccess: () => router.push('/recipes'),
+    })
+  }
 
   const toggleIngredient = (ingredientId: string) => {
     const newChecked = new Set(checkedIngredients)
@@ -65,13 +78,32 @@ function RecipeDetailContent({ id }: { id: string }) {
                 <h1 className="text-5xl font-bold mb-3">{recipe.title}</h1>
                 <p className="text-lg opacity-95">{recipe.description}</p>
               </div>
-              <button
-                onClick={() => toggleFavorite(recipe.id)}
-                className="ml-4 text-5xl hover:scale-110 transition-transform duration-200"
-                aria-label={isFavorite(recipe.id) ? 'Favorilerden çıkar' : 'Favorilere ekle'}
-              >
-                {isFavorite(recipe.id) ? '❤️' : '🤍'}
-              </button>
+              <div className="ml-4 flex flex-col items-end gap-3">
+                <button
+                  onClick={() => toggleFavorite(recipe.id)}
+                  className="text-5xl hover:scale-110 transition-transform duration-200"
+                  aria-label={isFavorite(recipe.id) ? 'Favorilerden çıkar' : 'Favorilere ekle'}
+                >
+                  {isFavorite(recipe.id) ? '❤️' : '🤍'}
+                </button>
+                {isOwner && (
+                  <div className="flex gap-2">
+                    <a
+                      href={`/recipes/${recipe.id}/edit`}
+                      className="px-3 py-1.5 text-sm bg-white text-gray-900 rounded-lg hover:bg-gray-100 font-medium"
+                    >
+                      Düzenle
+                    </a>
+                    <button
+                      onClick={handleDelete}
+                      disabled={deleteMutation.isPending}
+                      className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 font-medium"
+                    >
+                      {deleteMutation.isPending ? 'Siliniyor...' : 'Sil'}
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -275,7 +307,8 @@ function RecipeDetailContent({ id }: { id: string }) {
   )
 }
 
-export default function RecipeDetailPage({ params }: { params: { id: string } }) {
+export default function RecipeDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params)
   return (
     <Suspense
       fallback={
@@ -286,7 +319,7 @@ export default function RecipeDetailPage({ params }: { params: { id: string } })
         </div>
       }
     >
-      <RecipeDetailContent id={params.id} />
+      <RecipeDetailContent id={id} />
     </Suspense>
   )
 }

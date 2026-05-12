@@ -16,7 +16,7 @@
 'use client'
 
 import { useSuspenseQuery, useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { RecipeService } from '@/services/api/recipe.service'
+import { RecipeService, RecipeWritePayload } from '@/services/api/recipe.service'
 import { RecipeListParams } from '@/types/recipe.types'
 
 /**
@@ -145,7 +145,7 @@ export function useAddFavoriteMutation() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (recipeId: string) => RecipeService.addFavorite(recipeId),
+    mutationFn: (recipeId: string) => RecipeService.toggleFavorite(recipeId),
     // Optimistic update
     onMutate: async (_recipeId: string) => {
       // Pending favorileri iptal et
@@ -174,6 +174,58 @@ export function useAddFavoriteMutation() {
       queryClient.invalidateQueries({
         queryKey: recipeQueryKeys.favorites(),
       })
+    },
+  })
+}
+
+/**
+ * useMyRecipesQuery - Kullanıcının kendi tarifleri (profil sayfası için)
+ */
+export function useMyRecipesQuery(enabled = true) {
+  return useQuery({
+    queryKey: [...recipeQueryKeys.all, 'mine'] as const,
+    queryFn: () => RecipeService.getMyRecipes(),
+    enabled,
+    staleTime: 60 * 1000,
+  })
+}
+
+/**
+ * useCreateRecipeMutation - Yeni tarif oluştur
+ */
+export function useCreateRecipeMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (payload: RecipeWritePayload) => RecipeService.createRecipe(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: recipeQueryKeys.all })
+    },
+  })
+}
+
+/**
+ * useUpdateRecipeMutation - Tarif düzenle
+ */
+export function useUpdateRecipeMutation(id: string) {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (payload: RecipeWritePayload) => RecipeService.updateRecipe(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: recipeQueryKeys.detail(id) })
+      queryClient.invalidateQueries({ queryKey: recipeQueryKeys.lists() })
+    },
+  })
+}
+
+/**
+ * useDeleteRecipeMutation - Tarif sil
+ */
+export function useDeleteRecipeMutation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => RecipeService.deleteRecipe(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: recipeQueryKeys.all })
     },
   })
 }

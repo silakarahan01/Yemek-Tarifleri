@@ -83,14 +83,18 @@ export const useAuthStore = create<AuthStore>()(
         }),
     }),
     {
-      // Persistence config
+      // Persistence config — dev için tokens'ı da persist ediyoruz
+      // Production'da HTTP-only secure cookie tercih edilir
       name: 'auth-store',
-      // Hang tokens'ı localStorage'da tutma (sensitive data)
-      // Token'lar HTTP-Only cookie'de olmalı (production)
       partialize: (state) => ({
         user: state.user,
-        // tokens'ı persist etme - sayfayı yeniledikten sonra re-fetch et
+        tokens: state.tokens,
       }),
+      onRehydrateStorage: () => (state) => {
+        if (state && state.user) {
+          state.isAuthenticated = true
+        }
+      },
     }
   )
 )

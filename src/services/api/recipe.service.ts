@@ -1,12 +1,17 @@
 /**
- * Recipe API service — adapted for Django REST Framework backend
+ * Recipe API service — Django REST Framework backend adapter
  *
- * Django returns snake_case fields and DRF pagination format.
- * This service maps them to the frontend's camelCase types.
+ * Django snake_case fields + DRF pagination → frontend camelCase types.
  */
 
 import { apiClient } from './axios.instance'
-import { Recipe, RecipeListItem, RecipeListParams, RecipeDifficulty, RecipeCategory } from '@/types/recipe.types'
+import {
+  Recipe,
+  RecipeListItem,
+  RecipeListParams,
+  RecipeDifficulty,
+  RecipeCategory,
+} from '@/types/recipe.types'
 import { PaginatedResponse } from '@/types/api.types'
 
 // ─── Django response shapes ───────────────────────────────────────────────────
@@ -22,32 +27,18 @@ interface DjangoRecipeListItem {
   total_time: number
   servings: number
   image_url: string
-  rating: string
+  rating: string | number
   rating_count: number
   author_name: string
   created_at: string
 }
 
-interface DjangoIngredient {
-  id: number
-  name: string
-  amount: string
-}
-
-interface DjangoInstruction {
-  id: number
-  step: number
-  description: string
-}
-
-interface DjangoNutrition {
-  calories: number
-  protein: number
-  carbs: number
-  fat: number
-}
+interface DjangoIngredient { id: number; name: string; amount: string }
+interface DjangoInstruction { id: number; step: number; description: string }
+interface DjangoNutrition { calories: number; protein: number | string; carbs: number | string; fat: number | string }
 
 interface DjangoRecipeDetail extends DjangoRecipeListItem {
+  author_id: number | null
   ingredients: DjangoIngredient[]
   instructions: DjangoInstruction[]
   nutrition: DjangoNutrition | null
@@ -60,7 +51,26 @@ interface DjangoPaginatedResponse<T> {
   results: T[]
 }
 
+export interface RecipeWritePayload {
+  title: string
+  description: string
+  category: string
+  difficulty: string
+  prep_time: number
+  cook_time: number
+  servings: number
+  image_url?: string
+  ingredients: { name: string; amount: string }[]
+  instructions: { step: number; description: string }[]
+  nutrition?: { calories: number; protein: number; carbs: number; fat: number } | null
+}
+
 // ─── Mappers ──────────────────────────────────────────────────────────────────
+
+function toNumber(v: string | number): number {
+  const n = typeof v === 'string' ? parseFloat(v) : v
+  return Number.isFinite(n) ? n : 0
+}
 
 function mapListItem(r: DjangoRecipeListItem): RecipeListItem {
   return {
@@ -70,7 +80,7 @@ function mapListItem(r: DjangoRecipeListItem): RecipeListItem {
     prepTimeMinutes: r.prep_time,
     cookTimeMinutes: r.cook_time,
     difficulty: (r.difficulty as RecipeDifficulty) || RecipeDifficulty.EASY,
-    rating: parseFloat(r.rating) || 0,
+    rating: toNumber(r.rating),
     reviewCount: r.rating_count,
     favoriteCount: r.rating_count,
   }
@@ -87,12 +97,14 @@ function mapDetail(r: DjangoRecipeDetail): Recipe {
     difficulty: (r.difficulty as RecipeDifficulty) || RecipeDifficulty.EASY,
     categories: [r.category as RecipeCategory],
     imageUrl: r.image_url,
-    rating: parseFloat(r.rating) || 0,
+    rating: toNumber(r.rating),
     reviewCount: r.rating_count,
     favoriteCount: r.rating_count,
     createdAt: r.created_at,
     updatedAt: r.created_at,
-    author: { id: '1', name: r.author_name },
+    author: r.author_id
+      ? { id: String(r.author_id), name: r.author_name }
+      : { id: '0', name: r.author_name || 'Bilinmeyen' },
     ingredients: r.ingredients.map((ing) => ({
       id: String(ing.id),
       name: ing.name,
@@ -106,9 +118,9 @@ function mapDetail(r: DjangoRecipeDetail): Recipe {
     nutrition: r.nutrition
       ? {
           calories: r.nutrition.calories,
-          protein: r.nutrition.protein,
-          carbs: r.nutrition.carbs,
-          fat: r.nutrition.fat,
+          protein: toNumber(r.nutrition.protein),
+          carbs: toNumber(r.nutrition.carbs),
+          fat: toNumber(r.nutrition.fat),
         }
       : undefined,
   }
@@ -169,12 +181,42 @@ export class RecipeService {
     return response.data.results.map(mapListItem)
   }
 
-  static async getFavoriteRecipes(): Promise<PaginatedResponse<RecipeListItem>> {
-    return { items: [], total: 0, page: 1, pageSize: 20, hasMore: false }
+  static async getMyRecipes(): Promise<RecipeListItem[]> {
+    const response = await apiClient.get<DjangoPaginatedResponse<DjangoRecipeListItem>>(
+      '/recipes/',
+      { params: { author: 'me', page_size: 100 } }
+    )
+    return response.data.results.map(mapListItem)
   }
 
-  static async addFavorite(_recipeId: string): Promise<void> {}
-  static async removeFavorite(_recipeId: string): Promise<void> {}
-  static async addReview(_recipeId: string, _rating: number, _comment?: string): Promise<void> {}
-  static async getPopularCategories(): Promise<string[]> { return [] }
+  static async createRecipe(payload: RecipeWritePayload): Promise<Recipe> {
+    const response = await apiClient.post<DjangoRecipeDetail>('/recipes/', payload)
+    return mapDetail(response.data)
+  }
+
+  static async updateRecipe(id: string, payload: RecipeWritePayload): Promise<Recipe> {
+    const response = await apiClient.put<DjangoRecipeDetail>(`/recipes/${id}/`, payload)
+    return mapDetail(response.data)
+  }
+
+  static async deleteRecipe(id: string): Promise<void> {
+    await apiClient.delete(`/recipes/${id}/`)
+  }
+
+  // ─── Favorites ─────────────────────────────────────────────────────────────
+
+  static async getFavoriteRecipes(): Promise<PaginatedResponse<RecipeListItem>> {
+    const response = await apiClient.get<DjangoRecipeListItem[]>('/favorites/')
+    const items = response.data.map(mapListItem)
+    return { items, total: items.length, page: 1, pageSize: items.length, hasMore: false }
+  }
+
+  static async toggleFavorite(recipeId: string): Promise<boolean> {
+    const response = await apiClient.post<{ favorited: boolean }>(`/favorites/${recipeId}/`)
+    return response.data.favorited
+  }
+
+  static async removeFavorite(recipeId: string): Promise<void> {
+    await apiClient.delete(`/favorites/${recipeId}/`)
+  }
 }

@@ -89,18 +89,25 @@ export function useLogoutMutation() {
 
   return useMutation({
     mutationFn: async () => {
-      return AuthService.logout()
+      const tokens = (() => {
+        if (typeof window === 'undefined') return null
+        try {
+          return JSON.parse(localStorage.getItem('auth-tokens') || 'null')
+        } catch {
+          return null
+        }
+      })()
+      return AuthService.logout(tokens?.refreshToken)
     },
     onMutate: () => {
       setIsLoading(true)
     },
     onSuccess: () => {
       logout()
-      localStorage.removeItem('auth-tokens')
-      localStorage.removeItem('refresh-token')
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('auth-tokens')
+      }
       setIsLoading(false)
-
-      // Invalidate all queries
       queryClient.clear()
     },
     onError: (error: Error) => {

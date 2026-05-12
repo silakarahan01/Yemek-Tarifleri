@@ -47,6 +47,10 @@ __pycache__/
 backend/db.sqlite3
 backend/media/
 backend/*.egg-info/
+backend/.env
 .env
 venv/
 env/
+
+# Dev logs
+dev.log

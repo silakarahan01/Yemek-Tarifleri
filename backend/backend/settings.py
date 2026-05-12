@@ -1,13 +1,27 @@
+import os
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-vmcffznuhbb5@m#lnkxfais*8-^mkg6r1vchv)#0b3-=pu76&4'
+# .env dosyasını yükle (yoksa sessizce devam eder)
+load_dotenv(BASE_DIR / '.env')
 
-DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+def _split_csv(value: str) -> list[str]:
+    return [item.strip() for item in value.split(',') if item.strip()]
+
+
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+if not SECRET_KEY:
+    raise RuntimeError(
+        'DJANGO_SECRET_KEY ortam değişkeni tanımlı değil. backend/.env dosyasını oluşturun.'
+    )
+
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() in ('true', '1', 'yes')
+
+ALLOWED_HOSTS = _split_csv(os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1'))
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -100,9 +114,7 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'http://localhost:3002',
-]
+CORS_ALLOWED_ORIGINS = _split_csv(
+    os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:3000')
+)
 CORS_ALLOW_CREDENTIALS = True
